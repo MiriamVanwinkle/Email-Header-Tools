@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Email Header Tools</title>
+<script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════
+   THEME VARIABLES
+══════════════════════════════════════ */
+:root {
+  --bg:         #0d0f17;
+  --sidebar:    #111420;
+  --surface:    #161923;
+  --surface2:   #1e2333;
+  --border:     #252d45;
+  --a1:         #5c7cfa;
+  --a2:         #38d9a9;
+  --a3:         #f5a623;
+  --tx:         #e8ecf4;
+  --mu:         #8b95b0;
+  --rd:         #ff6b6b;
+  --shadow:     rgba(0,0,0,.35);
+}
+body.light {
+  --bg:         #eef0f7;
+  --sidebar:    #f8f9fc;
+  --surface:    #ffffff;
+  --surface2:   #eef0f7;
+  --border:     #cdd2e4;
+  --a1:         #3d5bd9;
+  --a2:         #15a87a;
+  --a3:         #b87a00;
+  --tx:         #1a1f36;
+  --mu:         #60698a;
+  --rd:         #d63232;
+  --shadow:     rgba(0,0,0,.10);
+}
+
+/* ══════════════════════════════════════
+   RESET & BASE
+══════════════════════════════════════ */
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html,body { height:100%; overflow:hidden; }
+body {
+  font-family: "Poppins", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+  background:var(--bg); color:var(--tx);
+  display:flex;
+  transition:background .25s,color .25s;
+}
+
+/* Phosphor icon base */
+i.ph {
+  display:inline-flex; align-items:center; justify-content:center;
+  vertical-align:middle; line-height:1;
+  color:inherit;
+  transition:color .25s;
+}
+
+/* ══════════════════════════════════════
+   SIDEBAR
+══════════════════════════════════════ */
+#sidebar {
+  width:224px; min-width:224px;
+  background:var(--sidebar);
+  border-right:1px solid var(--border);
+  display:flex; flex-direction:column;
+  height:100vh; overflow:hidden;
+  transition:background .25s, border-color .25s;
+}
+
+.sb-head {
+  padding:16px 16px 14px;
+  border-bottom:1px solid var(--border);
+  transition:border-color .25s;
+}
+.sb-head-row {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:10px;
+}
+.sb-logo-icon {
+  width:34px; height:34px; border-radius:9px;
+  background:linear-gradient(135deg,var(--a1),var(--a2));
+  display:flex; align-items:center; justify-content:center;
+  color:#fff; font-size:17px;
+  transition:background .25s;
+}
+.theme-btn {
+  width:32px; height:32px; border-radius:8px;
+  background:var(--surface2); border:1px solid var(--border);
+  color:var(--mu); cursor:pointer; font-size:15px;
+  display:flex; align-items:center; justify-content:center;
+  transition:all .2s;
+}
+.theme-btn:hover { border-color:var(--a1); color:var(--a1); }
+
+.sb-brand {
+  font-family:"Poppins", sans-serif; font-size:14px; font-weight:700;
+  color:var(--tx); line-height:1.2;
+  transition:color .25s;
+}
+.sb-sub {
+  font-size:10px; font-weight:600; letter-spacing:.4px;
+  color:var(--a1); margin-top:3px;
+  transition:color .25s;
+}
+
+.sb-section {
+  font-size:9px; font-weight:700; letter-spacing:2.5px;
+  text-transform:uppercase; color:var(--mu);
+  padding:14px 16px 6px;
+  transition:color .25s;
+}
+
+.sb-nav { padding:0 8px; display:flex; flex-direction:column; gap:4px; }
+
+.nav-btn {
+  display:flex; align-items:flex-start; gap:10px;
+  padding:11px 12px; border-radius:9px;
+  border:1px solid transparent; background:transparent;
+  cursor:pointer; text-align:left; width:100%;
+  font-family:"Poppins", sans-serif; color:var(--tx);
+  transition:all .18s ease;
+}
+.nav-btn:hover {
+  background:var(--surface2); border-color:var(--border);
+}
+.nav-btn.on-blue {
+  background:rgba(92,124,250,0.10);
+  border-color:rgba(92,124,250,0.45);
+}
+.nav-btn.on-green {
+  background:rgba(56,217,169,0.09);
+  border-color:rgba(56,217,169,0.40);
+}
+
+.ni-ic {
+  width:28px; height:28px; border-radius:7px; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  font-size:15px; margin-top:1px;
+  background:var(--surface2); color:var(--mu);
+  transition:all .18s;
+}
+.nav-btn.on-blue  .ni-ic { background:rgba(92,124,250,0.15); color:var(--a1); }
+.nav-btn.on-green .ni-ic { background:rgba(56,217,169,0.12); color:var(--a2); }
+
+.ni-body { display:flex; flex-direction:column; gap:2px; }
+.ni-name {
+  font-family:"Poppins", sans-serif; font-size:12px; font-weight:600;
+  color:var(--tx); line-height:1.25;
+  transition:color .25s;
+}
+.nav-btn.on-blue  .ni-name { color:var(--a1); }
+.nav-btn.on-green .ni-name { color:var(--a2); }
+.ni-desc { font-size:10px; color:var(--mu); line-height:1.5; transition:color .25s; }
+
+.sb-foot {
+  margin-top:auto; padding:14px 16px;
+  border-top:1px solid var(--border);
+  font-size:10px; color:var(--mu); line-height:1.7;
+  transition:border-color .25s,color .25s;
+}
+
+/* ══════════════════════════════════════
+   WORKSPACE
+══════════════════════════════════════ */
+#workspace {
+  flex:1; height:100vh; overflow-y:auto;
+  display:flex; flex-direction:column;
+  background:var(--bg);
+  transition:background .25s;
+}
+#workspace::-webkit-scrollbar { width:5px; }
+#workspace::-webkit-scrollbar-track { background:transparent; }
+#workspace::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
+
+/* Welcome */
+#welcome {
+  flex:1; display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  padding:40px; text-align:center;
+}
+.wlc-ic {
+  width:72px; height:72px; border-radius:20px; margin-bottom:20px;
+  background:rgba(92,124,250,0.08);
+  border:1px solid rgba(92,124,250,0.20);
+  display:flex; align-items:center; justify-content:center;
+  color:var(--a1); font-size:30px; opacity:.5;
+  transition:all .25s;
+}
+.wlc-title {
+  font-family:"Poppins", sans-serif; font-size:20px; font-weight:700;
+  color:var(--tx); opacity:.25; margin-bottom:8px;
+}
+.wlc-sub { font-size:12px; color:var(--mu); opacity:.45; max-width:260px; line-height:1.8; }
+
+/* Topbar */
+.topbar {
+  display:flex; align-items:center; gap:10px;
+  padding:11px 20px;
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  position:sticky; top:0; z-index:50; flex-shrink:0;
+  transition:background .25s, border-color .25s;
+}
+.tb-dot {
+  width:6px; height:6px; border-radius:50%; flex-shrink:0;
+}
+.dot-blue  { background:var(--a1); }
+.dot-green { background:var(--a2); }
+.tb-title {
+  font-family:"Poppins", sans-serif; font-size:14px; font-weight:700;
+  color:var(--tx);
+  transition:color .25s;
+}
+
+/* Content */
+.content { padding:20px; }
+
+/* ══════════════════════════════════════
+   SHARED FORM
+══════════════════════════════════════ */
+textarea, input[type=text] {
+  width:100%; padding:9px 11px;
+  font-family:'JetBrains Mono',monospace; font-size:12px;
+  border:1px solid var(--border); border-radius:8px;
+  resize:vertical; outline:none;
+  background:var(--surface2); color:var(--tx);
+  transition:border-color .2s, background .25s, color .25s;
+}
+textarea::placeholder, input::placeholder { color:var(--mu); }
+textarea:focus, input[type=text]:focus { border-color:var(--a1); }
+input[type=file] { display:none; }
+
+.card {
+  border:1px solid var(--border); border-radius:10px;
+  background:var(--surface); padding:16px; height:100%;
+  transition:background .25s, border-color .25s;
+}
+.card-title {
+  font-family:"Poppins", sans-serif; font-size:12px; font-weight:700;
+  color:var(--a1); border-bottom:1px solid var(--border);
+  padding-bottom:8px; margin-bottom:12px;
+  display:flex; align-items:center; gap:7px;
+  transition:color .25s, border-color .25s;
+}
+.card-title i.ph { font-size:15px; }
+
+.fg { margin-bottom:10px; }
+.fg > label {
+  font-size:11px; font-weight:500; color:var(--mu);
+  display:block; margin-bottom:4px;
+  transition:color .25s;
+}
+.chk {
+  font-size:11px !important; font-weight:500 !important;
+  display:flex !important; align-items:center; gap:6px;
+  cursor:pointer; color:var(--tx) !important; margin-bottom:0 !important;
+  transition:color .25s;
+}
+.chk input[type=checkbox] { width:14px; height:14px; accent-color:var(--a1); cursor:pointer; }
+
+/* ══════════════════════════════════════
+   BUTTONS
+══════════════════════════════════════ */
+.btn {
+  display:inline-flex; align-items:center; gap:5px;
+  padding:8px 14px; border:none; border-radius:8px;
+  font-family:"Poppins", sans-serif; font-size:11px; font-weight:600;
+  cursor:pointer; transition:all .15s ease; letter-spacing:.3px;
+  white-space:nowrap;
+}
+.btn:hover { filter:brightness(1.08); transform:translateY(-1px); box-shadow:0 4px 14px var(--shadow); }
+.btn:disabled { opacity:.38; cursor:not-allowed; transform:none; box-shadow:none; filter:none; }
+.btn-sm { padding:5px 10px; font-size:10px; border-radius:6px; }
+.btn-p  { background:var(--a1); color:#fff; }
+.btn-g  { background:var(--a2); color:#fff; }
+body.light .btn-g { color:#053326; }
+.btn-r  { background:var(--rd); color:#fff; }
+.btn-b  { background:#0ea5e9; color:#fff; }
+.btn-y  { background:var(--a3); color:#fff; }
+body.light .btn-y { color:#3a2200; }
+.btn-n  { background:var(--surface2); color:var(--tx); border:1px solid var(--border); }
+.btn-n:hover { border-color:var(--a1); }
+
+/* Primary action button (big) */
+.run-btn {
+  margin-top:12px; background:var(--a1); color:#fff;
+  border:none; padding:10px 20px;
+  font-family:"Poppins", sans-serif; font-size:12px; font-weight:600;
+  border-radius:8px; cursor:pointer; letter-spacing:.5px;
+  display:flex; align-items:center; gap:6px;
+  transition:all .2s;
+}
+.run-btn:hover { filter:brightness(1.1); transform:translateY(-1px); box-shadow:0 5px 16px var(--shadow); }
+
+/* ══════════════════════════════════════
+   TOOL 1
+══════════════════════════════════════ */
+#tool1 { display:none; flex-direction:column; }
+
+.t1-grid { display:flex; gap:16px; margin-bottom:16px; }
+.t1-col  { flex:1; display:flex; flex-direction:column; }
+#inputHeaders { height:300px; }
+
+.info-pill {
+  background:rgba(56,217,169,0.07);
+  border:1px solid rgba(56,217,169,0.22);
+  padding:9px 12px; border-radius:8px; margin-top:8px;
+  font-size:11px; color:var(--a2); line-height:1.9;
+  transition:all .25s;
+}
+
+.sep { border-top:1px solid var(--border); padding-top:10px; margin-top:10px; transition:border-color .25s; }
+
+#senderGroup {
+  display:none; margin-top:8px; padding:10px;
+  background:var(--surface2); border-radius:7px; border:1px solid var(--border);
+  transition:background .25s,border-color .25s;
+}
+#senderGroup small { color:var(--mu); font-size:10px; display:block; margin-top:4px; line-height:1.7; }
+#senderGroup code {
+  background:var(--border); padding:1px 5px; border-radius:3px;
+  font-size:10px; color:var(--tx);
+  transition:background .25s,color .25s;
+}
+
+.out-label {
+  font-family:"Poppins", sans-serif; font-size:12px; font-weight:700;
+  color:var(--a1); margin-bottom:8px; display:flex; align-items:center; gap:6px;
+  transition:color .25s;
+}
+.out-wrap { position:relative; }
+#processed { height:210px; }
+
+.out-action {
+  position:absolute; top:8px;
+  background:var(--surface); border:1px solid var(--border);
+  color:var(--mu); padding:5px 11px; border-radius:6px;
+  font-family:"Poppins", sans-serif; font-size:11px; font-weight:500;
+  cursor:pointer; display:flex; align-items:center; gap:5px;
+  transition:all .2s;
+}
+.out-action:hover { color:var(--tx); border-color:var(--a1); }
+
+#fnav { display:none; margin-top:10px; text-align:center; font-size:12px; }
+#fnav button {
+  background:var(--surface); border:1px solid var(--border);
+  color:var(--mu); padding:6px 13px; border-radius:7px;
+  font-family:"Poppins", sans-serif; font-size:11px; cursor:pointer;
+  display:inline-flex; align-items:center; gap:4px;
+  transition:all .2s;
+}
+#fnav button:hover { border-color:var(--a1); color:var(--tx); }
+#fctr { font-weight:600; margin:0 10px; color:var(--mu); }
+
+/* ══════════════════════════════════════
+   TOOL 2
+══════════════════════════════════════ */
+#tool2 { display:none; flex-direction:column; }
+
+.hint-bar {
+  background:rgba(92,124,250,0.05);
+  border:1px solid rgba(92,124,250,0.18);
+  border-radius:9px; padding:11px 14px; margin-bottom:14px;
+  font-size:11px; color:var(--mu); line-height:1.8;
+  transition:all .25s;
+}
+.hint-bar strong { color:var(--a1); }
+
+.t2-card {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:10px; padding:16px; margin-bottom:12px;
+  transition:background .25s,border-color .25s;
+}
+.t2-card-title {
+  font-family:"Poppins", sans-serif; font-size:12px; font-weight:700;
+  color:var(--a3); margin-bottom:10px;
+  display:flex; align-items:center; gap:6px;
+  transition:color .25s;
+}
+
+.btn-row { display:flex; gap:7px; flex-wrap:wrap; margin-bottom:10px; }
+
+#srcEdit {
+  min-height:160px;
+  border-color:rgba(245,166,35,0.30);
+  background:rgba(245,166,35,0.03);
+}
+
+.t2-stats { display:none; gap:14px; margin-top:10px; font-size:11px; color:var(--mu); transition:color .25s; }
+.stat { display:flex; align-items:center; gap:5px; }
+.stat-num { font-weight:600; color:var(--tx); transition:color .25s; }
+
+.t2-ctrl {
+  display:flex; align-items:center; gap:14px;
+  padding:10px 14px; background:var(--surface);
+  border:1px solid var(--border); border-radius:9px;
+  margin-bottom:12px; flex-wrap:wrap;
+  transition:background .25s,border-color .25s;
+}
+.tog-label {
+  display:flex; align-items:center; gap:6px;
+  font-size:11px; font-weight:500; color:var(--mu); cursor:pointer;
+  transition:color .25s;
+}
+.tog-label input[type=checkbox] { accent-color:var(--a2); cursor:pointer; }
+
+/* File list */
+.file-list { display:flex; flex-direction:column; gap:6px; }
+.fi {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:9px; padding:10px 14px;
+  display:flex; justify-content:space-between; align-items:center;
+  transition:all .18s;
+}
+.fi:hover { border-color:var(--a1); }
+.fi.fi-sel { border-color:var(--a2); background:rgba(56,217,169,0.04); }
+.fi-left { display:flex; align-items:center; gap:8px; flex:1; min-width:0; }
+.fi-name {
+  font-weight:500; color:var(--tx); font-size:12px;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:200px;
+  transition:color .25s;
+}
+.fi-badge {
+  font-size:10px; font-weight:600; padding:2px 8px; border-radius:4px;
+  white-space:nowrap; flex-shrink:0; display:flex; align-items:center; gap:3px;
+  transition:all .25s;
+}
+.b-pend { background:rgba(245,166,35,0.15); color:var(--a3); }
+.b-done { background:rgba(56,217,169,0.15); color:var(--a2); }
+.b-err  { background:rgba(255,107,107,0.12); color:var(--rd); }
+.fi-acts { display:flex; gap:4px; flex-shrink:0; }
+
+/* Preview */
+.preview {
+  background:var(--surface);
+  border:1px solid rgba(56,217,169,0.30);
+  border-radius:10px; padding:16px; margin-top:12px; display:none;
+  transition:background .25s,border-color .25s;
+}
+.preview.open { display:block; }
+.preview-head {
+  font-family:"Poppins", sans-serif; font-size:12px; font-weight:700;
+  color:var(--a2); margin-bottom:10px;
+  display:flex; align-items:center; gap:8px;
+  transition:color .25s;
+}
+.preview-wrap { position:relative; }
+.preview-text {
+  background:var(--surface2);
+  border:1px solid rgba(56,217,169,0.18);
+  border-radius:8px; padding:12px;
+  font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--tx);
+  white-space:pre; max-height:340px; overflow-y:auto; line-height:1.65;
+  transition:background .25s,color .25s,border-color .25s;
+}
+.preview-text::-webkit-scrollbar { width:4px; }
+.preview-text::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
+.cpy-wrap { position:absolute; top:8px; right:8px; z-index:10; }
+.cpy-btn {
+  background:var(--a1); color:#fff; border:none; border-radius:6px;
+  width:30px; height:30px; display:flex; align-items:center; justify-content:center;
+  cursor:pointer; font-size:14px; transition:all .2s; position:relative;
+}
+.cpy-btn:hover { filter:brightness(1.12); }
+.cpy-btn.ok { background:var(--a2); }
+.cpy-btn.ok::after {
+  content:'Copied!'; position:absolute; top:-28px; right:0;
+  background:var(--surface); color:var(--tx); border:1px solid var(--border);
+  padding:3px 8px; border-radius:5px;
+  font-size:10px; white-space:nowrap; font-family:'JetBrains Mono',monospace;
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════ SIDEBAR ══════════════ -->
+<div id="sidebar">
+  <div class="sb-head">
+    <div class="sb-head-row">
+      <div class="sb-logo-icon"><i class="ph ph-envelope-simple"></i></div>
+      <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Toggle theme">
+        <i class="ph ph-moon" id="themeIco"></i>
+      </button>
+    </div>
+    <div class="sb-brand">Email Header<br>Tools</div>
+    <div class="sb-sub">CMH5 / Noureddine Tools</div>
+  </div>
+
+  <div class="sb-section">Tools</div>
+
+  <nav class="sb-nav">
+    <button class="nav-btn" id="nb1" onclick="showTool(1)">
+      <div class="ni-ic"><i class="ph ph-sliders-horizontal"></i></div>
+      <div class="ni-body">
+        <span class="ni-name">Header Analyzer</span>
+      </div>
+    </button>
+    <button class="nav-btn" id="nb2" onclick="showTool(2)">
+      <div class="ni-ic"><i class="ph ph-funnel"></i></div>
+      <div class="ni-body">
+        <span class="ni-name">Header Extractor</span>
+      </div>
+    </button>
+  </nav>
+
+  <div class="sb-foot">
+    <i class="ph ph-arrow-bend-right-down" style="margin-right:4px;"></i>
+    Select a tool<br>to get started
+  </div>
+</div>
+
+<!-- ══════════════ WORKSPACE ══════════════ -->
+<div id="workspace">
+
+  <!-- Welcome screen -->
+  <div id="welcome">
+    <div class="wlc-ic"><i class="ph ph-envelope-open"></i></div>
+    <div class="wlc-title">Select a Tool</div>
+    <div class="wlc-sub">Choose a tool from the sidebar to start processing your email headers.</div>
+  </div>
+
+  <!-- ─────── TOOL 1 ─────── -->
+  <div id="tool1">
+    <div class="topbar">
+      <div class="tb-dot dot-blue"></div>
+      <i class="ph ph-sliders-horizontal" style="font-size:16px;color:var(--a1);"></i>
+      <span class="tb-title">Header Analyzer</span>
+    </div>
+    <div class="content">
+      <div class="t1-grid">
+
+        <!-- Left: Input -->
+        <div class="t1-col">
+          <div class="card">
+            <div class="card-title"><i class="ph ph-article"></i> Input Headers</div>
+            <div class="fg">
+              <label class="chk"><input type="checkbox" id="useFileUpload" onchange="toggleInput()"> Load from file(s) (.eml / .txt)</label>
+            </div>
+            <div id="fisec" style="display:none;margin-bottom:10px;">
+              <input type="file" id="fileInput" accept=".eml,.txt,.msg" multiple onchange="loadFiles()"
+                style="display:block;width:100%;padding:8px;border:1px solid var(--border);border-radius:7px;
+                       background:var(--surface2);color:var(--tx);font-family:'JetBrains Mono',monospace;font-size:11px;
+                       cursor:pointer;transition:background .25s,color .25s,border-color .25s;">
+              <div id="flist" style="margin-top:5px;font-size:11px;color:var(--mu);"></div>
+            </div>
+            <textarea id="inputHeaders" placeholder="Paste raw email headers here…" oninput="autoProc()"></textarea>
+          </div>
+        </div>
+
+        <!-- Right: Options -->
+        <div class="t1-col">
+          <div class="card">
+            <div class="card-title"><i class="ph ph-gear"></i> Processing Options</div>
+            <div class="fg"><label class="chk"><input type="checkbox" id="autoP" checked onchange="autoProc()"> Auto-process on input change</label></div>
+            <div class="fg"><label class="chk"><input type="checkbox" id="useRpath" checked onchange="autoProc()"> Replace domain with [P_RPATH]</label></div>
+            <div class="fg">
+              <label>Manual domain replacement:</label>
+              <input type="text" id="domainR" placeholder="e.g., example.com" oninput="autoProc()">
+            </div>
+            <div class="fg">
+              <label>To:</label>
+              <input type="text" id="toR" value="[*to]" oninput="autoProc()">
+            </div>
+            <div class="fg">
+              <label class="chk" style="color:var(--a1);"><input type="checkbox" id="ccCb" onchange="autoProc()"> Replace / Add Cc: [*to]</label>
+            </div>
+            <div class="fg">
+              <label>Message-ID tag:</label>
+              <input type="text" id="midTag" placeholder="Insert a tag into Message-ID" oninput="autoProc()">
+            </div>
+
+            <div class="info-pill">
+              <strong>Auto-applied:</strong><br>
+              <i class="ph ph-check" style="font-size:11px;"></i> Reply-To preserved &nbsp;
+              <i class="ph ph-check" style="font-size:11px;"></i> Auth-Results removed<br>
+              <i class="ph ph-check" style="font-size:11px;"></i> Date → [DATE]
+            </div>
+
+            <div class="sep">
+              <div class="fg">
+                <label class="chk" style="color:var(--a1);"><input type="checkbox" id="senderCb" onchange="toggleSender()"> Modify Sender: header</label>
+              </div>
+              <div id="senderGroup">
+                <label style="font-size:11px;color:var(--mu);display:block;margin-bottom:4px;">Sender domain:</label>
+                <input type="text" id="senderD" placeholder="e.g., example.com" oninput="autoProc()">
+                <small>• No Sender → adds <code>Sender: noreply@domain</code><br>• Exists → replaces domain only</small>
+              </div>
+            </div>
+
+            <button class="run-btn" onclick="runProcess()">
+              <i class="ph ph-play"></i> Process Headers
+            </button>
+          </div>
+        </div>
+
+      </div><!-- /t1-grid -->
+
+      <div class="out-label"><i class="ph ph-file-text"></i> Processed Output</div>
+      <div class="out-wrap">
+        <textarea id="processed" readonly placeholder="Output will appear here…"></textarea>
+        <button class="out-action" onclick="copyOut()" style="right:8px;"><i class="ph ph-copy"></i>Copy</button>
+        <button class="out-action" onclick="dlOut()" style="right:94px;"><i class="ph ph-download-simple"></i>Save</button>
+        <button class="out-action" onclick="dlAll()" id="dlAllBtn" style="right:196px;display:none;"><i class="ph ph-package"></i>Save All</button>
+      </div>
+      <div id="fnav">
+        <button onclick="prevF()"><i class="ph ph-caret-left"></i> Prev</button>
+        <span id="fctr"></span>
+        <button onclick="nextF()">Next <i class="ph ph-caret-right"></i></button>
+      </div>
+
+    </div>
+  </div><!-- /tool1 -->
+
+  <!-- ─────── TOOL 2 ─────── -->
+  <div id="tool2">
+    <div class="topbar">
+      <div class="tb-dot dot-green"></div>
+      <i class="ph ph-funnel" style="font-size:16px;color:var(--a2);"></i>
+      <span class="tb-title">Header Extractor</span>
+    </div>
+    <div class="content">
+
+      <div class="hint-bar">
+        <strong>Upload</strong> .eml / .txt or paste raw email
+        <i class="ph ph-arrow-right" style="font-size:11px;margin:0 4px;"></i>
+        <strong>Process</strong>
+        <i class="ph ph-arrow-right" style="font-size:11px;margin:0 4px;"></i>
+        <strong>Preview & Download</strong> clean headers
+      </div>
+
+      <div class="t2-card">
+        <div class="t2-card-title"><i class="ph ph-tray-arrow-down"></i> Input Source Email(s)</div>
+        <div class="btn-row">
+          <label for="t2fi" class="btn btn-p"><i class="ph ph-folder-open"></i> Upload Files</label>
+          <input type="file" id="t2fi" accept=".eml,.txt" multiple>
+          <button class="btn btn-b" id="manBtn"><i class="ph ph-play"></i> Add Manual</button>
+          <button class="btn btn-g" id="allBtn" disabled><i class="ph ph-rocket"></i> Process All</button>
+          <button class="btn btn-r" id="clrBtn"><i class="ph ph-trash"></i> Clear All</button>
+        </div>
+        <textarea id="srcEdit" placeholder="OR paste raw email content here…"></textarea>
+        <div class="t2-stats" id="t2stats">
+          <div class="stat"><i class="ph ph-files" style="color:var(--mu);"></i> <span class="stat-num" id="tTotal">0</span> files</div>
+          <div class="stat"><i class="ph ph-check-circle" style="color:var(--a2);"></i> <span class="stat-num" id="tDone">0</span> processed</div>
+          <div class="stat"><i class="ph ph-clock" style="color:var(--a3);"></i> <span class="stat-num" id="tPend">0</span> pending</div>
+        </div>
+      </div>
+
+      <div class="t2-ctrl">
+        <label class="tog-label"><input type="checkbox" id="forceDt"> Force Date → [DATE]</label>
+        <button class="btn btn-y" id="zipBtn" disabled><i class="ph ph-file-zip"></i> Download ZIP</button>
+      </div>
+
+      <div class="file-list" id="t2fl"></div>
+
+      <div class="preview" id="prevBox">
+        <div class="preview-head">
+          <i class="ph ph-eye"></i>
+          Preview: <span id="prevName" style="color:var(--tx);font-weight:600;">—</span>
+          <button class="btn btn-n btn-sm" id="dlCurBtn" style="margin-left:auto;">
+            <i class="ph ph-download-simple"></i> Download
+          </button>
+        </div>
+        <div class="preview-wrap">
+          <div class="preview-text" id="prevHdrs"></div>
+          <div class="cpy-wrap"></div>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /tool2 -->
+
+</div><!-- /workspace -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+
+// ══════════════════════════════
+//  THEME
+// ══════════════════════════════
+function toggleTheme() {
+  const light = document.body.classList.toggle('light');
+  document.getElementById('themeIco').className = light ? 'ph ph-sun' : 'ph ph-moon';
+}
+
+// ══════════════════════════════
+//  NAV
+// ══════════════════════════════
+function showTool(n) {
+  document.getElementById('welcome').style.display = 'none';
+  document.getElementById('tool1').style.display   = n===1 ? 'flex' : 'none';
+  document.getElementById('tool2').style.display   = n===2 ? 'flex' : 'none';
+  document.getElementById('nb1').className = 'nav-btn' + (n===1 ? ' on-blue'  : '');
+  document.getElementById('nb2').className = 'nav-btn' + (n===2 ? ' on-green' : '');
+  document.getElementById('workspace').scrollTop = 0;
+}
+
+// ══════════════════════════════
+//  TOOL 1
+// ══════════════════════════════
+let pf=[], pfIdx=0;
+
+function toggleInput(){
+  const c=document.getElementById('useFileUpload').checked;
+  document.getElementById('fisec').style.display = c?'block':'none';
+  document.getElementById('inputHeaders').style.display = c?'none':'block';
+  if(!c){pf=[];pfIdx=0;updNav();}
+}
+
+function toggleSender(){
+  const c=document.getElementById('senderCb').checked;
+  document.getElementById('senderGroup').style.display = c?'block':'none';
+  autoProc();
+}
+
+function loadFiles(){
+  const files=document.getElementById('fileInput').files;
+  if(!files.length)return;
+  pf=[];pfIdx=0;
+  const fl=document.getElementById('flist');
+  fl.textContent='Loading '+files.length+' file(s)…';
+  let done=0;
+  Array.from(files).forEach(file=>{
+    const r=new FileReader();
+    r.onload=e=>{
+      pf.push({name:file.name,original:e.target.result,processed:proc(e.target.result)});
+      if(++done===files.length){
+        fl.innerHTML='<i class="ph ph-check-circle" style="color:var(--a2);margin-right:4px;"></i>Loaded '+files.length+' file(s)';
+        pfIdx=0;showCur();updNav();
+      }
+    };
+    r.readAsText(file);
+  });
+}
+
+function showCur(){
+  if(!pf.length)return;
+  document.getElementById('inputHeaders').value=pf[pfIdx].original;
+  document.getElementById('processed').value=pf[pfIdx].processed;
+}
+
+function updNav(){
+  const nav=document.getElementById('fnav');
+  const ctr=document.getElementById('fctr');
+  const btn=document.getElementById('dlAllBtn');
+  if(pf.length>1){
+    nav.style.display='block';btn.style.display='inline-flex';
+    ctr.textContent='File '+(pfIdx+1)+' / '+pf.length;
+  }else{nav.style.display='none';btn.style.display='none';}
+}
+
+function prevF(){if(pfIdx>0){pfIdx--;showCur();updNav();}}
+function nextF(){if(pfIdx<pf.length-1){pfIdx++;showCur();updNav();}}
+
+function autoProc(){
+  if(!document.getElementById('autoP').checked)return;
+  if(pf.length){pf.forEach(f=>f.processed=proc(f.original));showCur();}
+  else runProcess();
+}
+
+function proc(src){
+  let h=src; if(!h.trim())return'';
+  const rpath=document.getElementById('useRpath').checked;
+  const man=document.getElementById('domainR').value.trim();
+  const toV=document.getElementById('toR').value.trim();
+  const tag=document.getElementById('midTag').value.trim();
+  const repCc=document.getElementById('ccCb').checked;
+  const modSd=document.getElementById('senderCb').checked;
+  const sdDom=document.getElementById('senderD').value.trim();
+  const dom=man||(rpath?'[P_RPATH]':'');
+  if(repCc){
+    if(/^Cc:/im.test(src))h=h.replace(/^Cc:.*$/im,'Cc: [*to]');
+    else if(/^To:/im.test(h))h=h.replace(/^(To:.*)$/im,'$1\nCc: [*to]');
+    else h='Cc: [*to]\n'+h;
+  }
+  if(dom){
+    h=h.replace(/(From:.*?<[^@]+@)([\w\.-]+)(>)/i,'$1'+dom+'$3');
+    h=h.replace(/(Reply-To:.*?<[^@]+@)([\w\.-]+)(>)/gi,'$1'+dom+'$3');
+    h=h.replace(/(Reply-To:\s*)([^@\s<]+@)([\w\.-]+)/gi,'$1$2'+dom);
+  }
+  if(modSd&&sdDom){
+    const sm=src.match(/^Sender:\s*(.+)$/im);
+    if(sm){const em=sm[1].trim().match(/<?([^@<>\s]+)@[^@<>\s]+>?/);h=h.replace(/^Sender:.*$/im,'Sender:'+(em?em[1]:'noreply')+'@'+sdDom);}
+    else if(/^From:/im.test(h))h=h.replace(/^(From:.*)$/im,'$1\nSender: noreply@'+sdDom);
+    else h='Sender: noreply@'+sdDom+'\n'+h;
+  }
+  if(toV)h=h.replace(/^(To:).*/im,'To: '+toV);
+  if(tag)h=h.replace(/Message-ID:\s*<([^@]+)@([^>]+)>/gi,(m,lp,dp)=>{
+    const mid=Math.floor(lp.length/2);
+    return'Message-ID: <'+lp.slice(0,mid)+'.'+tag+'.'+lp.slice(mid)+'@'+dp+'>';
+  });
+  h=h.replace(/^Date:.*$/im,'Date: [DATE]');
+  h=h.replace(/--Original Message--[\s\S]*/gi,'');
+  let lines=h.split(/\r?\n/);
+  const fi=lines.findIndex(l=>/^Received:\s*from/i.test(l));
+  if(fi!==-1)lines=lines.slice(fi);
+  lines=lines.filter(l=>!/^Delivered-To:/i.test(l)&&!/^Received-SPF:/i.test(l));
+  let fl=[],skip=false;
+  for(const l of lines){if(/^ARC-/i.test(l)){skip=true;continue;}if(/^\s/.test(l)&&skip)continue;skip=false;fl.push(l);}
+  lines=fl;fl=[];skip=false;
+  for(const l of lines){if(/^(Authentication-Results|DKIM-Signature):/i.test(l)){skip=true;continue;}if(/^\s/.test(l)&&skip)continue;skip=false;fl.push(l);}
+  lines=fl.filter(l=>!/^X-/i.test(l)&&!/^Return-Path:/i.test(l));
+  let rl=[];skip=false;
+  for(const l of lines){
+    if(/^Received:/i.test(l)){if(/^Received:\s*from/i.test(l)){skip=false;rl.push(l);}else skip=true;}
+    else if(/^\s/.test(l)&&skip)continue;
+    else{skip=false;rl.push(l);}
+  }
+  return rl.join('\n');
+}
+
+function runProcess(){document.getElementById('processed').value=proc(document.getElementById('inputHeaders').value);}
+
+function copyOut(){
+  navigator.clipboard.writeText(document.getElementById('processed').value)
+    .then(()=>showToast('Copied!')).catch(()=>showToast('Failed to copy','err'));
+}
+function dlOut(){
+  const out=document.getElementById('processed').value;
+  if(!out.trim()){showToast('Nothing to save','err');return;}
+  const fn=pf.length?'processed-'+pf[pfIdx].name.replace(/\.[^/.]+$/,'')+'.txt':'processed-headers.txt';
+  dlBlob(out,fn);
+}
+function dlAll(){
+  let i=0;
+  function nx(){
+    if(i>=pf.length)return;
+    dlBlob(pf[i].processed,'processed-'+pf[i].name.replace(/\.[^/.]+$/,'')+'.txt');
+    i++;if(i<pf.length)setTimeout(nx,500);
+  }nx();
+}
+function dlBlob(text,name){
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([text],{type:'text/plain'}));
+  a.download=name;document.body.appendChild(a);a.click();document.body.removeChild(a);
+}
+
+// ══════════════════════════════
+//  TOOL 2
+// ══════════════════════════════
+let t2f=[],t2pi=-1;
+const t2fi  =document.getElementById('t2fi');
+const srcEd =document.getElementById('srcEdit');
+const t2fl  =document.getElementById('t2fl');
+const prevBox=document.getElementById('prevBox');
+const prevH =document.getElementById('prevHdrs');
+const prevN =document.getElementById('prevName');
+const allBtn=document.getElementById('allBtn');
+const manBtn=document.getElementById('manBtn');
+const clrBtn=document.getElementById('clrBtn');
+const zipBtn=document.getElementById('zipBtn');
+const dlCur =document.getElementById('dlCurBtn');
+const fdCb  =document.getElementById('forceDt');
+const cpyWr =document.querySelector('.cpy-wrap');
+
+function bad(n){return['delivered-to','received-spf','authentication-results','dkim-signature','domainkey-signature','x-google-smtp-source','x-forwarded-encrypted','x-received'].includes(n)||n.startsWith('dkim-')||n.startsWith('arc-');}
+
+function t2parse(email){
+  let hasCc=false,ctAdded=false,lastR=-1,all=[];
+  const ht=email.split(/\n\n|\r\n\r\n/,2)[0];
+  const lines=ht.split(/\r?\n/);
+  let i=0,start=false;
+  while(i<lines.length){
+    const ln=lines[i];
+    if(!ln.includes(':')){i++;continue;}
+    const nm=ln.split(':',1)[0].toLowerCase().trim();
+    if(nm==='return-path'){i++;while(i<lines.length&&/^[ \t]/.test(lines[i]))i++;start=true;continue;}
+    if(!start&&nm)start=true;
+    if(!start){i++;continue;}
+    const blk=[ln];i++;
+    while(i<lines.length&&/^[ \t]/.test(lines[i])){blk.push(lines[i]);i++;}
+    all.push({name:nm,full:blk.join('\n')});
+    if(nm==='received')lastR=all.length-1;
+  }
+  let kept=[],indH=[],afterR=false;
+  for(let j=0;j<all.length;j++){
+    const{name,full}=all[j];
+    if(j>lastR)afterR=true;
+    if(bad(name))continue;
+    if(afterR&&name.startsWith('x-'))continue;
+    let ph=full;
+    if(name==='date')ph=fdCb.checked?'Date: [DATE]':full;
+    else if(name==='from')ph='From: "[P_FRNAME]" <email[EID]@[P_RPATH]>';
+    else if(name==='reply-to'){const a=full.split(':')[1].trim();ph='Reply-To: '+a.split('@')[0]+'@[P_RPATH]';}
+    else if(name==='to')ph='To: [*to]';
+    else if(name==='cc'){hasCc=true;ph='Cc: [*to]';}
+    else if(name==='subject')ph='Subject: [S]';
+    else if(name.startsWith('content-')){
+      if(!ctAdded){ph='Content-Type: multipart/related;boundary="[BND]";type="multipart/alternative"';ctAdded=true;indH.push({name:'Content-Type',content:ph});kept.push(ph);}
+      continue;
+    }else if(name==='message-id'){
+      const pts=full.split(':')[1].trim().split('@');
+      let pfx=pts[0],dom=pts[1]||'[P_RPATH]';
+      const mid=Math.floor(pfx.length/2);
+      pfx=pfx.slice(0,mid)+'[EID]'+pfx.slice(mid);
+      ph='Message-ID: '+pfx+'@'+dom;
+    }
+    if(!name.startsWith('content-')){indH.push({name:full.split(':')[0].trim(),content:ph});kept.push(ph);}
+  }
+  if(!hasCc){kept.push('Cc: [*to]');indH.push({name:'Cc',content:'Cc: [*to]'});}
+  indH.sort((a,b)=>a.name.localeCompare(b.name));
+  return{combined:kept.join('\n'),headers:indH};
+}
+
+function t2updateStats(){
+  const done=t2f.filter(f=>f.s==='done').length,pend=t2f.filter(f=>f.s==='pend').length;
+  document.getElementById('tTotal').textContent=t2f.length;
+  document.getElementById('tDone').textContent=done;
+  document.getElementById('tPend').textContent=pend;
+  document.getElementById('t2stats').style.display=t2f.length?'flex':'none';
+  allBtn.disabled=pend===0;zipBtn.disabled=done===0;
+}
+
+function t2render(){
+  t2fl.innerHTML='';
+  t2f.forEach((f,i)=>{
+    const sc=f.s==='done'?'b-done':f.s==='err'?'b-err':'b-pend';
+    const si=f.s==='done'?'ph-check-circle':f.s==='err'?'ph-x-circle':'ph-clock';
+    const sl=f.s==='done'?'Processed':f.s==='err'?'Error':'Pending';
+    const d=document.createElement('div');
+    d.className='fi'+(t2pi===i?' fi-sel':'');
+    d.innerHTML=`
+      <div class="fi-left">
+        <i class="ph ph-file-text" style="font-size:15px;color:var(--mu);flex-shrink:0;"></i>
+        <div class="fi-name">${f.name}</div>
+        <div class="fi-badge ${sc}"><i class="ph ${si}" style="font-size:11px;"></i>${sl}</div>
+      </div>
+      <div class="fi-acts">
+        <button class="btn btn-b btn-sm" onclick="t2prev(${i})"><i class="ph ph-eye"></i> View</button>
+        <button class="btn btn-g btn-sm" onclick="t2proc(${i})" ${f.s==='done'?'disabled':''}><i class="ph ph-play"></i></button>
+        <button class="btn btn-n btn-sm" onclick="t2dl(${i})" ${f.s!=='done'?'disabled':''}><i class="ph ph-download-simple"></i></button>
+        <button class="btn btn-r btn-sm" onclick="t2rm(${i})"><i class="ph ph-trash"></i></button>
+      </div>`;
+    t2fl.appendChild(d);
+  });
+  t2updateStats();
+}
+
+function mkCpy(){
+  cpyWr.innerHTML='';
+  const b=document.createElement('button');
+  b.className='cpy-btn';
+  b.innerHTML='<i class="ph ph-copy"></i>';
+  b.onclick=()=>{
+    navigator.clipboard.writeText(prevH.textContent).then(()=>{
+      b.classList.add('ok');setTimeout(()=>b.classList.remove('ok'),2000);
+    });
+  };
+  cpyWr.appendChild(b);
+}
+
+function t2prev(i){
+  t2pi=i;const f=t2f[i];
+  if(f.s!=='done')t2proc(i);
+  prevN.textContent=f.name;
+  prevH.textContent=f.ph?.combined||'…';
+  prevBox.classList.add('open');mkCpy();t2render();
+}
+function t2proc(i){
+  const f=t2f[i];
+  try{f.ph=t2parse(f.content);f.s='done';}catch(e){f.s='err';}
+  t2render();
+  if(t2pi===i){prevH.textContent=f.ph?.combined||'Error';mkCpy();}
+}
+function t2rm(i){
+  t2f.splice(i,1);
+  if(t2pi===i){prevBox.classList.remove('open');t2pi=-1;}
+  else if(t2pi>i)t2pi--;
+  t2render();
+}
+function t2dl(i){
+  const f=t2f[i];if(!f.ph)return;
+  dlBlob(f.ph.combined,f.name.replace(/\.[^/.]+$/,'')+'_headers.txt');
+}
+
+t2fi.addEventListener('change',e=>{
+  Array.from(e.target.files).forEach(file=>{
+    const r=new FileReader();
+    r.onload=ev=>{t2f.push({name:file.name,content:ev.target.result,s:'pend',ph:null});t2render();};
+    r.readAsText(file);
+  });
+  t2fi.value='';
+});
+
+manBtn.onclick=()=>{
+  const c=srcEd.value.trim();if(!c){showToast('Paste content first','err');return;}
+  t2f.push({name:'Manual Input '+(t2f.length+1),content:c,s:'pend',ph:null});
+  t2render();srcEd.value='';
+};
+allBtn.onclick=()=>t2f.forEach((_,i)=>{if(t2f[i].s==='pend')t2proc(i);});
+dlCur.onclick=()=>{if(t2pi!==-1)t2dl(t2pi);};
+zipBtn.onclick=async()=>{
+  const zip=new JSZip();
+  t2f.forEach(f=>{if(f.s==='done'&&f.ph)zip.file(f.name.replace(/\.[^/.]+$/,'')+'_headers.txt',f.ph.combined);});
+  const blob=await zip.generateAsync({type:'blob'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='all_email_headers.zip';a.click();
+};
+fdCb.addEventListener('change',()=>{
+  t2f.forEach((_,i)=>{if(t2f[i].s==='done')t2proc(i);});
+  if(t2pi!==-1)t2prev(t2pi);
+});
+clrBtn.onclick=()=>{
+  t2f=[];t2pi=-1;srcEd.value='';t2fl.innerHTML='';
+  prevBox.classList.remove('open');cpyWr.innerHTML='';t2updateStats();
+};
+
+window.t2prev=t2prev;window.t2proc=t2proc;window.t2rm=t2rm;window.t2dl=t2dl;
+
+// ══════════════════════════════
+//  TOAST
+// ══════════════════════════════
+function showToast(msg,type='ok'){
+  const t=document.createElement('div');
+  t.style.cssText=`position:fixed;bottom:24px;right:24px;z-index:9999;
+    padding:10px 18px;border-radius:9px;font-size:12px;font-weight:600;
+    font-family:"Poppins",sans-serif;
+    background:${type==='err'?'var(--rd)':'var(--a2)'};color:#fff;
+    box-shadow:0 4px 18px var(--shadow);
+    display:flex;align-items:center;gap:7px;
+    animation:fadein .2s ease;`;
+  t.innerHTML=`<i class="ph ${type==='err'?'ph-x-circle':'ph-check-circle'}" style="font-size:15px;"></i>${msg}`;
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(),2200);
+}
+</script>
+</body>
+</html>
