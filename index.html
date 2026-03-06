@@ -142,7 +142,7 @@ i.ph {
 }
 .nav-btn.on-purple {
   background:rgba(176,108,250,0.10);
-  border-color:rgba(176,108,250,0.40);
+  border-color:rgba(176,108,250,0.45);
 }
 
 .ni-ic {
@@ -485,37 +485,45 @@ body.light .btn-y { color:#3a2200; }
   padding:3px 8px; border-radius:5px;
   font-size:10px; white-space:nowrap; font-family:'JetBrains Mono',monospace;
 }
-/* ── IP CONVERTER (tool3) ── */
+/* ══════════════════════════════════════
+   TOOL 3 — IP CONVERTER
+══════════════════════════════════════ */
 #tool3 { display:none; flex-direction:column; }
 .ip-main {
   flex:1; display:flex; flex-direction:column;
-  align-items:center; padding:24px 20px; gap:16px; overflow-y:auto;
+  align-items:center; justify-content:center;
+  padding:28px 24px; gap:16px;
+  min-height:calc(100vh - 48px);
 }
-.ip-card {
-  width:100%; max-width:580px;
+.ip-main.has-results { justify-content:flex-start; }
+.ip-input-card {
+  width:100%; max-width:600px;
   background:var(--surface); border:1px solid var(--border);
   border-radius:12px; overflow:hidden;
+  transition:background .25s, border-color .25s;
 }
 .ip-card-hdr {
-  padding:10px 16px;
+  padding:11px 16px;
   background:var(--surface2); border-bottom:1px solid var(--border);
   font-size:11px; font-weight:600; color:var(--mu);
   letter-spacing:.06em; text-transform:uppercase;
   display:flex; align-items:center; gap:8px;
+  transition:background .25s, border-color .25s;
 }
 .ip-card-hdr i { font-size:14px; color:#b06cfa; }
-.ip-input-row { display:flex; padding:14px; gap:0; }
+.ip-input-row { display:flex; padding:14px; }
 .ip-field {
   flex:1; background:var(--surface2); border:1px solid var(--border);
   border-right:none; border-radius:8px 0 0 8px;
   color:var(--tx); font-family:"Poppins",sans-serif;
-  font-size:15px; font-weight:500; padding:9px 13px;
-  outline:none; transition:border-color .2s; letter-spacing:.03em;
+  font-size:15px; font-weight:500; padding:10px 14px;
+  outline:none; transition:border-color .2s, background .25s;
+  letter-spacing:.03em;
 }
 .ip-field:focus { border-color:#b06cfa; }
 .ip-field::placeholder { color:var(--mu); font-weight:300; font-size:13px; }
 .ip-cvt-btn {
-  padding:9px 18px;
+  padding:10px 20px;
   background:linear-gradient(135deg,#b06cfa,#7c3fd9);
   border:none; border-radius:0 8px 8px 0;
   color:#fff; font-family:"Poppins",sans-serif;
@@ -524,23 +532,55 @@ body.light .btn-y { color:#3a2200; }
   transition:opacity .2s; white-space:nowrap;
 }
 .ip-cvt-btn:hover { opacity:.88; }
+.ip-cvt-btn:active { opacity:.75; }
+.ip-err {
+  display:none; width:100%; max-width:600px;
+  padding:11px 16px; border-radius:10px;
+  background:rgba(255,107,107,.08); border:1px solid rgba(255,107,107,.3);
+  color:var(--rd); font-size:13px; align-items:center; gap:8px;
+}
+.ip-err.show { display:flex; }
 .ip-results {
-  width:100%; max-width:580px;
+  width:100%; max-width:600px;
   background:var(--surface); border:1px solid var(--border);
   border-radius:12px; overflow:hidden; display:none;
+  transition:background .25s, border-color .25s;
 }
-.ip-results.show { display:block; }
+.ip-results.show {
+  display:block;
+  animation:ipSlideUp .4s cubic-bezier(.34,1.3,.64,1) forwards;
+}
+@keyframes ipSlideUp {
+  from { opacity:0; transform:translateY(20px); }
+  to   { opacity:1; transform:translateY(0); }
+}
 .ip-row {
   display:flex; align-items:center;
   padding:10px 16px; border-bottom:1px solid var(--border);
   gap:12px; transition:background .15s;
+  opacity:0; transform:translateY(7px);
 }
 .ip-row:last-child { border-bottom:none; }
 .ip-row:hover { background:var(--surface2); }
+.ip-results.show .ip-row { animation:ipRowIn .3s ease forwards; }
+.ip-results.show .ip-row:nth-child(2)  { animation-delay:.04s; }
+.ip-results.show .ip-row:nth-child(3)  { animation-delay:.07s; }
+.ip-results.show .ip-row:nth-child(4)  { animation-delay:.10s; }
+.ip-results.show .ip-row:nth-child(5)  { animation-delay:.13s; }
+.ip-results.show .ip-row:nth-child(6)  { animation-delay:.16s; }
+.ip-results.show .ip-row:nth-child(7)  { animation-delay:.19s; }
+.ip-results.show .ip-row:nth-child(8)  { animation-delay:.22s; }
+.ip-results.show .ip-row:nth-child(9)  { animation-delay:.25s; }
+.ip-results.show .ip-row:nth-child(10) { animation-delay:.28s; }
+.ip-results.show .ip-row:nth-child(11) { animation-delay:.31s; }
+@keyframes ipRowIn {
+  from { opacity:0; transform:translateY(7px); }
+  to   { opacity:1; transform:translateY(0); }
+}
 .ip-lbl {
   font-size:10px; font-weight:600; color:var(--mu);
   letter-spacing:.05em; text-transform:uppercase;
-  min-width:180px; flex-shrink:0;
+  min-width:185px; flex-shrink:0;
 }
 .ip-val {
   flex:1; font-size:12.5px; font-weight:500;
@@ -550,24 +590,19 @@ body.light .btn-y { color:#3a2200; }
 .ip-val.c-green  { color:var(--a2); }
 .ip-val.c-orange { color:var(--a3); }
 .ip-copy {
-  width:26px; height:26px; border-radius:6px;
+  width:27px; height:27px; border-radius:6px;
   border:1px solid var(--border); background:transparent;
-  color:var(--mu); cursor:pointer;
+  color:var(--mu); cursor:pointer; flex-shrink:0;
   display:flex; align-items:center; justify-content:center;
-  font-size:12px; flex-shrink:0; transition:all .15s;
+  font-size:12px; transition:all .15s;
 }
 .ip-copy:hover { color:var(--a2); border-color:var(--a2); background:rgba(56,217,169,.08); }
 .ip-copy.copied { color:var(--a2); border-color:var(--a2); }
-.ip-err {
-  display:none; width:100%; max-width:580px;
-  padding:11px 16px; border-radius:10px;
-  background:rgba(255,107,107,.08); border:1px solid rgba(255,107,107,.3);
-  color:var(--rd); font-size:13px; align-items:center; gap:8px;
+.ip-ld {
+  display:inline-block; width:5px; height:5px; border-radius:50%;
+  background:var(--mu); animation:ipLdp 1s infinite;
 }
-.ip-err.show { display:flex; }
-.ld { display:inline-block; width:5px; height:5px; border-radius:50%;
-  background:var(--mu); animation:ldp 1s infinite; }
-@keyframes ldp { 0%,100%{opacity:.3} 50%{opacity:1} }
+@keyframes ipLdp { 0%,100%{opacity:.3} 50%{opacity:1} }
 </style>
 </head>
 <body>
@@ -604,6 +639,7 @@ body.light .btn-y { color:#3a2200; }
       <div class="ni-ic"><i class="ph ph-globe"></i></div>
       <div class="ni-body">
         <span class="ni-name">IP Converter</span>
+        <span class="ni-desc">All formats & lookups</span>
       </div>
     </button>
   </nav>
@@ -781,17 +817,17 @@ body.light .btn-y { color:#3a2200; }
       <i class="ph ph-globe" style="font-size:16px;color:#b06cfa;"></i>
       <span class="tb-title">IP Converter</span>
     </div>
-    <div class="ip-main">
 
-      <div class="ip-card">
+    <div class="ip-main" id="ipMain">
+
+      <div class="ip-input-card">
         <div class="ip-card-hdr">
           <i class="ph ph-cursor-text"></i>
           Enter any Valid IP Address
         </div>
         <div class="ip-input-row">
           <input class="ip-field" id="ipInput" type="text"
-            placeholder="8.8.8.8"
-            maxlength="15"
+            placeholder="8.8.8.8" maxlength="15"
             onkeydown="if(event.key==='Enter') ipConvert()"
             oninput="document.getElementById('ipErr').classList.remove('show')"
           />
@@ -858,7 +894,10 @@ body.light .btn-y { color:#3a2200; }
         </div>
         <div class="ip-row">
           <span class="ip-lbl">Host Name</span>
-          <span class="ip-val" id="ir-host"><span class="ld" id="ipLd" style="display:none"></span><span id="ipHostVal">—</span></span>
+          <span class="ip-val" id="ir-host">
+            <span class="ip-ld" id="ipLd" style="display:none"></span>
+            <span id="ipHostVal">—</span>
+          </span>
           <button class="ip-copy" onclick="ipCopy('ir-host',this)"><i class="ph ph-copy"></i></button>
         </div>
       </div>
@@ -904,46 +943,55 @@ function ipParseV4(ip) {
     if(isNaN(n) || n < 0 || n > 255 || String(n) !== p.trim()) return null;
     return n;
   });
-  if(nums.some(n => n === null)) return null;
-  return nums;
+  return nums.some(n => n === null) ? null : nums;
 }
 
 function ipConvert() {
-  const raw   = document.getElementById('ipInput').value.trim();
-  const errEl = document.getElementById('ipErr');
-  const errTx = document.getElementById('ipErrTx');
+  const raw    = document.getElementById('ipInput').value.trim();
+  const errEl  = document.getElementById('ipErr');
+  const errTx  = document.getElementById('ipErrTx');
+  const card   = document.getElementById('ipResults');
+  const main   = document.getElementById('ipMain');
+
   errEl.classList.remove('show');
-  document.getElementById('ipResults').classList.remove('show');
+  card.classList.remove('show');
+  void card.offsetWidth;
 
-  if(!raw) { errTx.textContent='Please enter an IP address'; errEl.classList.add('show'); return; }
-
+  if(!raw) {
+    errTx.textContent = 'Please enter an IP address';
+    errEl.classList.add('show'); return;
+  }
   const octs = ipParseV4(raw);
-  if(!octs) { errTx.textContent='Invalid IPv4 — use format: 0-255.0-255.0-255.0-255'; errEl.classList.add('show'); return; }
+  if(!octs) {
+    errTx.textContent = 'Invalid IPv4 — use format: 0–255.0–255.0–255.0–255';
+    errEl.classList.add('show'); return;
+  }
 
   const [a,b,c,d] = octs;
   const int32 = ((a*256+b)*256+c)*256+d;
   const hexAB = ((a<<8)|b).toString(16).padStart(4,'0');
   const hexCD = ((c<<8)|d).toString(16).padStart(4,'0');
 
-  ipSet('ir-dotted', `${a}.${b}.${c}.${d}`);
-  ipSet('ir-ipv6c',  `::ffff:${hexAB}:${hexCD}`);
-  ipSet('ir-ipv6s',  `0:0:0:0:0:ffff:${hexAB}:${hexCD}`);
-  ipSet('ir-ipv6f',  `0000:0000:0000:0000:0000:ffff:${hexAB}:${hexCD}`);
-  ipSet('ir-octal',  octs.map(o=>'0'+o.toString(8).padStart(3,'0')).join('.'));
-  ipSet('ir-hex',    '0x'+int32.toString(16).toUpperCase().padStart(8,'0'));
-  ipSet('ir-int',    int32.toString());
-  ipSet('ir-bin',    octs.map(o=>o.toString(2).padStart(8,'0')).join('.'));
-  ipSet('ir-ptr',    [...octs].reverse().join('.')+'.in-addr.arpa');
+  ipSv('ir-dotted', `${a}.${b}.${c}.${d}`);
+  ipSv('ir-ipv6c',  `::ffff:${hexAB}:${hexCD}`);
+  ipSv('ir-ipv6s',  `0:0:0:0:0:ffff:${hexAB}:${hexCD}`);
+  ipSv('ir-ipv6f',  `0000:0000:0000:0000:0000:ffff:${hexAB}:${hexCD}`);
+  ipSv('ir-octal',  octs.map(o=>'0'+o.toString(8).padStart(3,'0')).join('.'));
+  ipSv('ir-hex',    '0x'+int32.toString(16).toUpperCase().padStart(8,'0'));
+  ipSv('ir-int',    int32.toString());
+  ipSv('ir-bin',    octs.map(o=>o.toString(2).padStart(8,'0')).join('.'));
+  ipSv('ir-ptr',    [...octs].reverse().join('.')+'.in-addr.arpa');
 
   document.getElementById('ipHostVal').textContent = '…';
   document.getElementById('ipLd').style.display = 'inline-block';
-  document.getElementById('ipResults').classList.add('show');
 
-  // PTR lookup via Google DoH
-  const ptr = [...octs].reverse().join('.')+'.in-addr.arpa';
-  fetch(`https://dns.google/resolve?name=${encodeURIComponent(ptr)}&type=PTR`)
+  card.classList.add('show');
+  main.classList.add('has-results');
+
+  const ptrName = [...octs].reverse().join('.')+'.in-addr.arpa';
+  fetch(`https://dns.google/resolve?name=${encodeURIComponent(ptrName)}&type=PTR`)
     .then(r=>r.json())
-    .then(data => {
+    .then(data=>{
       document.getElementById('ipLd').style.display = 'none';
       document.getElementById('ipHostVal').textContent =
         (data.Answer && data.Answer.length)
@@ -956,7 +1004,7 @@ function ipConvert() {
     });
 }
 
-function ipSet(id, val) { document.getElementById(id).textContent = val; }
+function ipSv(id, val) { document.getElementById(id).textContent = val; }
 
 function ipCopy(id, btn) {
   const val = id === 'ir-host'
@@ -967,9 +1015,9 @@ function ipCopy(id, btn) {
     .then(()=>{
       showToast('Copied!');
       btn.classList.add('copied');
-      setTimeout(()=>btn.classList.remove('copied'),1200);
+      setTimeout(()=>btn.classList.remove('copied'), 1200);
     })
-    .catch(()=>showToast('Copy failed','err'));
+    .catch(()=>showToast('Copy failed', 'err'));
 }
 
 // ══════════════════════════════
