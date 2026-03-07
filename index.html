@@ -738,7 +738,7 @@ body.light .btn-y { color:#3a2200; }
 
       <div class="out-label"><i class="ph ph-file-text"></i> Processed Output</div>
       <div class="out-wrap">
-        <textarea id="processed" readonly placeholder="Output will appear here…"></textarea>
+        <textarea id="processed" placeholder="Output will appear here — you can edit manually…"></textarea>
         <button class="out-action" onclick="copyOut()" style="right:8px;"><i class="ph ph-copy"></i>Copy</button>
         <button class="out-action" onclick="dlOut()" style="right:94px;"><i class="ph ph-download-simple"></i>Save</button>
         <button class="out-action" onclick="dlAll()" id="dlAllBtn" style="right:196px;display:none;"><i class="ph ph-package"></i>Save All</button>
@@ -1099,7 +1099,9 @@ function proc(src){
     else h='Cc: [*to]\n'+h;
   }
   if(dom){
-    h=h.replace(/(From:.*?<[^@]+@)([\w\.-]+)(>)/i,'$1'+dom+'$3');
+    const fromLine=(h.match(/^From:.*$/im)||[''])[0];
+    if(/<[^@]+@[\w\.-]+>/i.test(fromLine)) h=h.replace(/(From:.*?<[^@]+@)([\w\.-]+)(>)/i,'$1'+dom+'$3');
+    else h=h.replace(/(From:\s*[^@\s<]+@)([\w\.-]+)/i,'$1'+dom);
     h=h.replace(/(Reply-To:.*?<[^@]+@)([\w\.-]+)(>)/gi,'$1'+dom+'$3');
     h=h.replace(/(Reply-To:\s*)([^@\s<]+@)([\w\.-]+)/gi,'$1$2'+dom);
   }
