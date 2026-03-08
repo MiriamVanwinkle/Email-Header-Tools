@@ -145,8 +145,8 @@ i.ph {
   border-color:rgba(176,108,250,0.45);
 }
 .nav-btn.on-teal {
-  background:rgba(20,184,166,0.10);
-  border-color:rgba(20,184,166,0.45);
+  background:rgba(245,166,35,0.10);
+  border-color:rgba(245,166,35,0.45);
 }
 
 .ni-ic {
@@ -159,7 +159,7 @@ i.ph {
 .nav-btn.on-blue  .ni-ic { background:rgba(92,124,250,0.15); color:var(--a1); }
 .nav-btn.on-green .ni-ic { background:rgba(56,217,169,0.12); color:var(--a2); }
 .nav-btn.on-purple .ni-ic { background:rgba(176,108,250,0.13); color:#b06cfa; }
-.nav-btn.on-teal .ni-ic { background:rgba(20,184,166,0.13); color:#14b8a6; }
+.nav-btn.on-teal .ni-ic { background:rgba(245,166,35,0.13); color:var(--a3); }
 
 .ni-body { display:flex; flex-direction:column; gap:2px; }
 .ni-name {
@@ -170,7 +170,7 @@ i.ph {
 .nav-btn.on-blue  .ni-name { color:var(--a1); }
 .nav-btn.on-green .ni-name { color:var(--a2); }
 .nav-btn.on-purple .ni-name { color:#b06cfa; }
-.nav-btn.on-teal .ni-name { color:#14b8a6; }
+.nav-btn.on-teal .ni-name { color:var(--a3); }
 .ni-desc { font-size:10px; color:var(--mu); line-height:1.5; transition:color .25s; }
 
 .sb-foot {
@@ -243,58 +243,95 @@ i.ph {
    TOOL 4 — FILE COMBINER
 ══════════════════════════════════════ */
 #tool4 { display:none; flex-direction:column; }
-.dot-teal { background:#14b8a6; }
+.dot-teal { background:var(--a3); }
 
+.nav-btn.on-teal {
+  background:rgba(245,166,35,0.10);
+  border-color:rgba(245,166,35,0.45);
+}
+.nav-btn.on-teal .ni-ic { background:rgba(245,166,35,0.13); color:var(--a3); }
+.nav-btn.on-teal .ni-name { color:var(--a3); }
+
+/* Drop zone — big styled button */
 .t4-drop {
-  border:2px dashed var(--border);
-  border-radius:12px; padding:36px 24px;
-  text-align:center; cursor:pointer;
+  position:relative; overflow:hidden;
+  border-radius:14px; padding:0;
+  cursor:pointer; margin-bottom:14px;
+  border:1.5px solid rgba(245,166,35,0.30);
   background:var(--surface);
   transition:all .25s;
-  margin-bottom:14px;
 }
-.t4-drop:hover, .t4-drop.dragover {
-  border-color:#14b8a6;
-  background:rgba(20,184,166,0.05);
+.t4-drop:hover { border-color:rgba(245,166,35,0.70); transform:translateY(-2px); box-shadow:0 8px 28px rgba(245,166,35,0.12); }
+.t4-drop.dragover { border-color:var(--a3); background:rgba(245,166,35,0.06); }
+
+.t4-drop-inner {
+  display:flex; align-items:center; gap:20px;
+  padding:20px 24px;
 }
-.t4-drop-icon { font-size:2.4em; color:#14b8a6; margin-bottom:10px; }
-.t4-drop-text { font-size:13px; font-weight:600; color:var(--tx); margin-bottom:5px; transition:color .25s; }
-.t4-drop-sub { font-size:11px; color:var(--mu); transition:color .25s; }
+.t4-drop-icon-wrap {
+  width:56px; height:56px; border-radius:14px; flex-shrink:0;
+  background:rgba(245,166,35,0.10);
+  border:1px solid rgba(245,166,35,0.25);
+  display:flex; align-items:center; justify-content:center;
+  font-size:24px; color:var(--a3);
+  transition:all .25s;
+}
+.t4-drop:hover .t4-drop-icon-wrap { background:rgba(245,166,35,0.18); }
+.t4-drop-texts { text-align:left; }
+.t4-drop-text { font-size:13px; font-weight:700; color:var(--tx); margin-bottom:3px; transition:color .25s; }
+.t4-drop-sub { font-size:11px; color:var(--mu); line-height:1.6; transition:color .25s; }
+.t4-drop-badge {
+  margin-left:auto; flex-shrink:0;
+  background:rgba(245,166,35,0.12); border:1px solid rgba(245,166,35,0.30);
+  color:var(--a3); font-size:10px; font-weight:700;
+  padding:5px 12px; border-radius:20px; letter-spacing:.4px;
+  transition:all .25s;
+}
+.t4-drop:hover .t4-drop-badge { background:rgba(245,166,35,0.22); }
 
 .t4-file-list {
-  display:flex; flex-direction:column; gap:6px;
+  display:flex; flex-direction:column; gap:5px;
   margin-bottom:14px;
 }
 .t4-fi {
   background:var(--surface); border:1px solid var(--border);
-  border-radius:9px; padding:10px 14px;
+  border-radius:9px; padding:9px 14px;
   display:flex; justify-content:space-between; align-items:center;
   transition:all .18s;
 }
-.t4-fi:hover { border-color:#14b8a6; }
-.t4-fi-left { display:flex; align-items:center; gap:8px; flex:1; min-width:0; }
+.t4-fi:hover { border-color:rgba(245,166,35,0.50); background:rgba(245,166,35,0.03); }
+.t4-fi-left { display:flex; align-items:center; gap:10px; flex:1; min-width:0; }
+.t4-fi-num {
+  width:20px; height:20px; border-radius:5px; flex-shrink:0;
+  background:rgba(245,166,35,0.12); border:1px solid rgba(245,166,35,0.25);
+  display:flex; align-items:center; justify-content:center;
+  font-size:9px; font-weight:700; color:var(--a3);
+}
 .t4-fi-name {
   font-weight:500; color:var(--tx); font-size:12px;
-  white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:340px;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:380px;
   transition:color .25s;
 }
-.t4-fi-size { font-size:10px; color:var(--mu); flex-shrink:0; }
+.t4-fi-size {
+  font-size:10px; color:var(--mu); flex-shrink:0;
+  background:var(--surface2); padding:2px 7px; border-radius:4px;
+}
 
 .t4-preview {
   background:var(--surface2);
-  border:1px solid rgba(20,184,166,0.25);
+  border:1px solid rgba(245,166,35,0.20);
   border-radius:8px; padding:12px;
   font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--tx);
   white-space:pre-wrap; word-wrap:break-word;
-  max-height:260px; overflow-y:auto; line-height:1.65;
+  max-height:340px; overflow-y:auto; line-height:1.65;
   margin-top:10px;
   transition:background .25s, color .25s, border-color .25s;
 }
 .t4-preview::-webkit-scrollbar { width:4px; }
-.t4-preview::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
+.t4-preview::-webkit-scrollbar-thumb { background:rgba(245,166,35,0.30); border-radius:2px; }
 
-.btn-teal { background:#14b8a6; color:#fff; }
-body.light .btn-teal { color:#022c27; }
+.btn-teal { background:var(--a3); color:#fff; }
+body.light .btn-teal { color:#3a2200; }
 .tb-title {
   font-family:"Poppins", sans-serif; font-size:14px; font-weight:700;
   color:var(--tx);
@@ -997,19 +1034,24 @@ body.light .btn-y { color:#3a2200; }
 
     <div class="content">
 
-      <div class="hint-bar" style="border-color:rgba(20,184,166,0.22);background:rgba(20,184,166,0.05);">
-        <strong style="color:#14b8a6;">Upload</strong> multiple .txt files
+      <div class="hint-bar" style="border-color:rgba(245,166,35,0.22);background:rgba(245,166,35,0.05);">
+        <strong style="color:var(--a3);">Upload</strong> multiple .txt files
         <i class="ph ph-arrow-right" style="font-size:11px;margin:0 4px;"></i>
-        <strong style="color:#14b8a6;">Combine</strong> them with <code style="background:var(--border);padding:1px 5px;border-radius:3px;font-size:10px;color:var(--tx);">__SEP__</code> separators
+        <strong style="color:var(--a3);">Combine</strong> them with <code style="background:var(--border);padding:1px 5px;border-radius:3px;font-size:10px;color:var(--tx);">__SEP__</code> separators
         <i class="ph ph-arrow-right" style="font-size:11px;margin:0 4px;"></i>
-        <strong style="color:#14b8a6;">Download</strong> the merged file
+        <strong style="color:var(--a3);">Download</strong> the merged file
       </div>
 
       <!-- Drop zone -->
       <div class="t4-drop" id="t4drop" onclick="document.getElementById('t4fi').click()">
-        <div class="t4-drop-icon"><i class="ph ph-folder-open"></i></div>
-        <div class="t4-drop-text">Click to select files or drag & drop</div>
-        <div class="t4-drop-sub">Select multiple .txt files to combine with __SEP__ separators</div>
+        <div class="t4-drop-inner">
+          <div class="t4-drop-icon-wrap"><i class="ph ph-upload-simple"></i></div>
+          <div class="t4-drop-texts">
+            <div class="t4-drop-text">Click to select files or drag & drop</div>
+            <div class="t4-drop-sub">Supports multiple .txt files — combined with <strong>__SEP__</strong> separators</div>
+          </div>
+          <div class="t4-drop-badge">BROWSE</div>
+        </div>
       </div>
       <input type="file" id="t4fi" multiple accept=".txt,text/plain">
 
@@ -1034,7 +1076,7 @@ body.light .btn-y { color:#3a2200; }
 
       <!-- Preview -->
       <div id="t4previewWrap" style="display:none;">
-        <div class="out-label" style="color:#14b8a6;margin-top:14px;">
+        <div class="out-label" style="color:var(--a3);margin-top:14px;">
           <i class="ph ph-eye"></i> Preview
         </div>
         <div class="t4-preview" id="t4preview"></div>
@@ -1506,7 +1548,8 @@ function t4render() {
     d.className = 't4-fi';
     d.innerHTML = `
       <div class="t4-fi-left">
-        <i class="ph ph-file-text" style="font-size:15px;color:var(--mu);flex-shrink:0;"></i>
+        <div class="t4-fi-num">${i+1}</div>
+        <i class="ph ph-file-text" style="font-size:14px;color:var(--mu);flex-shrink:0;"></i>
         <div class="t4-fi-name">${f.name}</div>
         <div class="t4-fi-size">${(f.size/1024).toFixed(1)} KB</div>
       </div>
@@ -1569,8 +1612,8 @@ function t4clear() {
 function t4showStatus(msg, type) {
   const el = document.getElementById('t4status');
   if (!msg) { el.innerHTML = ''; return; }
-  const bg = type==='ok' ? 'rgba(20,184,166,0.12)' : type==='err' ? 'rgba(255,107,107,0.10)' : 'var(--surface2)';
-  const col = type==='ok' ? '#14b8a6' : type==='err' ? 'var(--rd)' : 'var(--mu)';
+  const bg = type==='ok' ? 'rgba(245,166,35,0.10)' : type==='err' ? 'rgba(255,107,107,0.10)' : 'var(--surface2)';
+  const col = type==='ok' ? 'var(--a3)' : type==='err' ? 'var(--rd)' : 'var(--mu)';
   el.innerHTML = `<div style="margin:10px 0;padding:9px 13px;border-radius:8px;background:${bg};color:${col};font-size:11px;font-weight:600;">${msg}</div>`;
 }
 
