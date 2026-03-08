@@ -144,6 +144,10 @@ i.ph {
   background:rgba(176,108,250,0.10);
   border-color:rgba(176,108,250,0.45);
 }
+.nav-btn.on-teal {
+  background:rgba(20,184,166,0.10);
+  border-color:rgba(20,184,166,0.45);
+}
 
 .ni-ic {
   width:28px; height:28px; border-radius:7px; flex-shrink:0;
@@ -155,6 +159,7 @@ i.ph {
 .nav-btn.on-blue  .ni-ic { background:rgba(92,124,250,0.15); color:var(--a1); }
 .nav-btn.on-green .ni-ic { background:rgba(56,217,169,0.12); color:var(--a2); }
 .nav-btn.on-purple .ni-ic { background:rgba(176,108,250,0.13); color:#b06cfa; }
+.nav-btn.on-teal .ni-ic { background:rgba(20,184,166,0.13); color:#14b8a6; }
 
 .ni-body { display:flex; flex-direction:column; gap:2px; }
 .ni-name {
@@ -165,6 +170,7 @@ i.ph {
 .nav-btn.on-blue  .ni-name { color:var(--a1); }
 .nav-btn.on-green .ni-name { color:var(--a2); }
 .nav-btn.on-purple .ni-name { color:#b06cfa; }
+.nav-btn.on-teal .ni-name { color:#14b8a6; }
 .ni-desc { font-size:10px; color:var(--mu); line-height:1.5; transition:color .25s; }
 
 .sb-foot {
@@ -232,6 +238,63 @@ i.ph {
 .dot-blue  { background:var(--a1); }
 .dot-green { background:var(--a2); }
 .dot-purple { background:#b06cfa; }
+
+/* ══════════════════════════════════════
+   TOOL 4 — FILE COMBINER
+══════════════════════════════════════ */
+#tool4 { display:none; flex-direction:column; }
+.dot-teal { background:#14b8a6; }
+
+.t4-drop {
+  border:2px dashed var(--border);
+  border-radius:12px; padding:36px 24px;
+  text-align:center; cursor:pointer;
+  background:var(--surface);
+  transition:all .25s;
+  margin-bottom:14px;
+}
+.t4-drop:hover, .t4-drop.dragover {
+  border-color:#14b8a6;
+  background:rgba(20,184,166,0.05);
+}
+.t4-drop-icon { font-size:2.4em; color:#14b8a6; margin-bottom:10px; }
+.t4-drop-text { font-size:13px; font-weight:600; color:var(--tx); margin-bottom:5px; transition:color .25s; }
+.t4-drop-sub { font-size:11px; color:var(--mu); transition:color .25s; }
+
+.t4-file-list {
+  display:flex; flex-direction:column; gap:6px;
+  margin-bottom:14px;
+}
+.t4-fi {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:9px; padding:10px 14px;
+  display:flex; justify-content:space-between; align-items:center;
+  transition:all .18s;
+}
+.t4-fi:hover { border-color:#14b8a6; }
+.t4-fi-left { display:flex; align-items:center; gap:8px; flex:1; min-width:0; }
+.t4-fi-name {
+  font-weight:500; color:var(--tx); font-size:12px;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:340px;
+  transition:color .25s;
+}
+.t4-fi-size { font-size:10px; color:var(--mu); flex-shrink:0; }
+
+.t4-preview {
+  background:var(--surface2);
+  border:1px solid rgba(20,184,166,0.25);
+  border-radius:8px; padding:12px;
+  font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--tx);
+  white-space:pre-wrap; word-wrap:break-word;
+  max-height:260px; overflow-y:auto; line-height:1.65;
+  margin-top:10px;
+  transition:background .25s, color .25s, border-color .25s;
+}
+.t4-preview::-webkit-scrollbar { width:4px; }
+.t4-preview::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
+
+.btn-teal { background:#14b8a6; color:#fff; }
+body.light .btn-teal { color:#022c27; }
 .tb-title {
   font-family:"Poppins", sans-serif; font-size:14px; font-weight:700;
   color:var(--tx);
@@ -652,6 +715,13 @@ body.light .btn-y { color:#3a2200; }
         <span class="ni-desc">All formats & lookups</span>
       </div>
     </button>
+    <button class="nav-btn" id="nb4" onclick="showTool(4)">
+      <div class="ni-ic"><i class="ph ph-files"></i></div>
+      <div class="ni-body">
+        <span class="ni-name">File Combiner</span>
+        <span class="ni-desc">Merge .txt with separators</span>
+      </div>
+    </button>
   </nav>
 
   <div class="sb-foot">
@@ -917,6 +987,62 @@ body.light .btn-y { color:#3a2200; }
     </div>
   </div><!-- /tool3 -->
 
+  <!-- ─────── TOOL 4 : FILE COMBINER ─────── -->
+  <div id="tool4">
+    <div class="topbar">
+      <div class="tb-dot dot-teal"></div>
+      <i class="ph ph-files" style="font-size:16px;color:#14b8a6;"></i>
+      <span class="tb-title">File Combiner</span>
+    </div>
+
+    <div class="content">
+
+      <div class="hint-bar" style="border-color:rgba(20,184,166,0.22);background:rgba(20,184,166,0.05);">
+        <strong style="color:#14b8a6;">Upload</strong> multiple .txt files
+        <i class="ph ph-arrow-right" style="font-size:11px;margin:0 4px;"></i>
+        <strong style="color:#14b8a6;">Combine</strong> them with <code style="background:var(--border);padding:1px 5px;border-radius:3px;font-size:10px;color:var(--tx);">__SEP__</code> separators
+        <i class="ph ph-arrow-right" style="font-size:11px;margin:0 4px;"></i>
+        <strong style="color:#14b8a6;">Download</strong> the merged file
+      </div>
+
+      <!-- Drop zone -->
+      <div class="t4-drop" id="t4drop" onclick="document.getElementById('t4fi').click()">
+        <div class="t4-drop-icon"><i class="ph ph-folder-open"></i></div>
+        <div class="t4-drop-text">Click to select files or drag & drop</div>
+        <div class="t4-drop-sub">Select multiple .txt files to combine with __SEP__ separators</div>
+      </div>
+      <input type="file" id="t4fi" multiple accept=".txt,text/plain">
+
+      <!-- File list -->
+      <div class="t4-file-list" id="t4fl"></div>
+
+      <!-- Action buttons -->
+      <div class="btn-row">
+        <button class="btn btn-teal" id="t4combineBtn" disabled onclick="t4combine()">
+          <i class="ph ph-git-merge"></i> Combine Files
+        </button>
+        <button class="btn btn-n" id="t4dlBtn" disabled onclick="t4download()">
+          <i class="ph ph-download-simple"></i> Download Combined
+        </button>
+        <button class="btn btn-r" id="t4clrBtn" onclick="t4clear()">
+          <i class="ph ph-trash"></i> Clear All
+        </button>
+      </div>
+
+      <!-- Status -->
+      <div id="t4status"></div>
+
+      <!-- Preview -->
+      <div id="t4previewWrap" style="display:none;">
+        <div class="out-label" style="color:#14b8a6;margin-top:14px;">
+          <i class="ph ph-eye"></i> Preview
+        </div>
+        <div class="t4-preview" id="t4preview"></div>
+      </div>
+
+    </div>
+  </div><!-- /tool4 -->
+
 </div><!-- /workspace -->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -938,9 +1064,11 @@ function showTool(n) {
   document.getElementById('tool1').style.display   = n===1 ? 'flex' : 'none';
   document.getElementById('tool2').style.display   = n===2 ? 'flex' : 'none';
   document.getElementById('tool3').style.display   = n===3 ? 'flex' : 'none';
+  document.getElementById('tool4').style.display   = n===4 ? 'flex' : 'none';
   document.getElementById('nb1').className = 'nav-btn' + (n===1 ? ' on-blue'   : '');
   document.getElementById('nb2').className = 'nav-btn' + (n===2 ? ' on-green'  : '');
   document.getElementById('nb3').className = 'nav-btn' + (n===3 ? ' on-purple' : '');
+  document.getElementById('nb4').className = 'nav-btn' + (n===4 ? ' on-teal'   : '');
   document.getElementById('workspace').scrollTop = 0;
 }
 
@@ -1344,6 +1472,107 @@ clrBtn.onclick=()=>{
 };
 
 window.t2prev=t2prev;window.t2proc=t2proc;window.t2rm=t2rm;window.t2dl=t2dl;
+
+// ══════════════════════════════
+//  TOOL 4 — FILE COMBINER
+// ══════════════════════════════
+let t4files = [];
+let t4combined = '';
+
+const t4fi   = document.getElementById('t4fi');
+const t4fl   = document.getElementById('t4fl');
+const t4drop = document.getElementById('t4drop');
+
+t4drop.addEventListener('dragover', e => { e.preventDefault(); t4drop.classList.add('dragover'); });
+t4drop.addEventListener('dragleave', () => t4drop.classList.remove('dragover'));
+t4drop.addEventListener('drop', e => {
+  e.preventDefault(); t4drop.classList.remove('dragover');
+  const files = Array.from(e.dataTransfer.files).filter(f => f.type === 'text/plain' || f.name.endsWith('.txt'));
+  t4handle(files);
+});
+t4fi.addEventListener('change', e => { t4handle(Array.from(e.target.files)); t4fi.value=''; });
+
+function t4handle(files) {
+  files.forEach(f => {
+    if (!t4files.find(x => x.name === f.name && x.size === f.size)) t4files.push(f);
+  });
+  t4render();
+}
+
+function t4render() {
+  t4fl.innerHTML = '';
+  t4files.forEach((f, i) => {
+    const d = document.createElement('div');
+    d.className = 't4-fi';
+    d.innerHTML = `
+      <div class="t4-fi-left">
+        <i class="ph ph-file-text" style="font-size:15px;color:var(--mu);flex-shrink:0;"></i>
+        <div class="t4-fi-name">${f.name}</div>
+        <div class="t4-fi-size">${(f.size/1024).toFixed(1)} KB</div>
+      </div>
+      <button class="btn btn-r btn-sm" onclick="t4remove(${i})"><i class="ph ph-trash"></i></button>`;
+    t4fl.appendChild(d);
+  });
+  document.getElementById('t4combineBtn').disabled = t4files.length === 0;
+  document.getElementById('t4dlBtn').disabled = !t4combined;
+}
+
+function t4remove(i) {
+  t4files.splice(i, 1);
+  t4combined = '';
+  document.getElementById('t4previewWrap').style.display = 'none';
+  t4showStatus('','');
+  t4render();
+}
+
+async function t4combine() {
+  if (!t4files.length) return;
+  t4showStatus('Processing files…','');
+  try {
+    const contents = [];
+    for (const file of t4files) {
+      const text = await new Promise((res,rej) => {
+        const r = new FileReader();
+        r.onload = e => res(e.target.result);
+        r.onerror = () => rej(new Error('Failed to read: ' + file.name));
+        r.readAsText(file);
+      });
+      contents.push(text.trim());
+    }
+    t4combined = contents.join('\n\n__SEP__\n\n');
+    t4showStatus('Files combined successfully!','ok');
+    const prev = document.getElementById('t4preview');
+    const wrap = document.getElementById('t4previewWrap');
+    prev.textContent = t4combined;
+    wrap.style.display = 'block';
+    document.getElementById('t4dlBtn').disabled = false;
+  } catch(e) {
+    t4showStatus('Error: ' + e.message, 'err');
+  }
+}
+
+function t4download() {
+  if (!t4combined) return;
+  dlBlob(t4combined, 'combined_files.txt');
+  showToast('Downloaded!');
+}
+
+function t4clear() {
+  t4files = []; t4combined = '';
+  t4fl.innerHTML = '';
+  document.getElementById('t4previewWrap').style.display = 'none';
+  t4showStatus('','');
+  document.getElementById('t4combineBtn').disabled = true;
+  document.getElementById('t4dlBtn').disabled = true;
+}
+
+function t4showStatus(msg, type) {
+  const el = document.getElementById('t4status');
+  if (!msg) { el.innerHTML = ''; return; }
+  const bg = type==='ok' ? 'rgba(20,184,166,0.12)' : type==='err' ? 'rgba(255,107,107,0.10)' : 'var(--surface2)';
+  const col = type==='ok' ? '#14b8a6' : type==='err' ? 'var(--rd)' : 'var(--mu)';
+  el.innerHTML = `<div style="margin:10px 0;padding:9px 13px;border-radius:8px;background:${bg};color:${col};font-size:11px;font-weight:600;">${msg}</div>`;
+}
 
 // ══════════════════════════════
 //  TOAST
