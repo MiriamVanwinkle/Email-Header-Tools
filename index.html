@@ -906,7 +906,7 @@ body.light .btn-y { color:#3a2200; }
       </div>
 
       <div class="t2-ctrl">
-        <label class="tog-label"><input type="checkbox" id="forceDt"> Force Date → [DATE]</label>
+        <label class="tog-label" style="display:none;"><input type="checkbox" id="forceDt" checked> Force Date → [DATE]</label>
         <button class="btn btn-y" id="zipBtn" disabled><i class="ph ph-file-zip"></i> Download ZIP</button>
       </div>
 
@@ -1079,7 +1079,18 @@ body.light .btn-y { color:#3a2200; }
         <div class="out-label" style="color:var(--a3);margin-top:14px;">
           <i class="ph ph-eye"></i> Preview
         </div>
-        <div class="t4-preview" id="t4preview"></div>
+        <div style="position:relative;">
+          <div class="t4-preview" id="t4preview"></div>
+          <button id="t4copyBtn" onclick="t4copy()" style="
+            position:absolute;top:8px;right:8px;
+            width:32px;height:32px;border-radius:8px;
+            background:rgba(245,166,35,0.13);
+            border:1px solid rgba(245,166,35,0.35);
+            color:var(--a3);font-size:15px;
+            display:flex;align-items:center;justify-content:center;
+            cursor:pointer;transition:all .2s;z-index:10;
+          " title="Copy All"><i class="ph ph-copy"></i></button>
+        </div>
       </div>
 
     </div>
@@ -1598,6 +1609,22 @@ function t4download() {
   if (!t4combined) return;
   dlBlob(t4combined, 'combined_files.txt');
   showToast('Downloaded!');
+}
+
+function t4copy() {
+  if (!t4combined) return;
+  navigator.clipboard.writeText(t4combined).then(() => {
+    const btn = document.getElementById('t4copyBtn');
+    btn.innerHTML = '<i class="ph ph-check"></i>';
+    btn.style.background = 'rgba(245,166,35,0.28)';
+    btn.style.borderColor = 'rgba(245,166,35,0.70)';
+    showToast('Copied!');
+    setTimeout(() => {
+      btn.innerHTML = '<i class="ph ph-copy"></i>';
+      btn.style.background = 'rgba(245,166,35,0.13)';
+      btn.style.borderColor = 'rgba(245,166,35,0.35)';
+    }, 2000);
+  }).catch(() => showToast('Copy failed', 'err'));
 }
 
 function t4clear() {
