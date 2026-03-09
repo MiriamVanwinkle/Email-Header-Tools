@@ -245,6 +245,110 @@ i.ph {
 #tool4 { display:none; flex-direction:column; }
 .dot-teal { background:var(--a3); }
 
+/* ══════════════════════════════════════
+   TOOL 5 — SPF GENERATOR
+══════════════════════════════════════ */
+#tool5 { display:none; flex-direction:column; }
+.dot-spf { background:#00e5ff; }
+
+.nav-btn.on-spf {
+  background:rgba(0,229,255,0.10);
+  border-color:rgba(0,229,255,0.45);
+}
+.nav-btn.on-spf .ni-ic { background:rgba(0,229,255,0.13); color:#00e5ff; }
+.nav-btn.on-spf .ni-name { color:#00e5ff; }
+
+.t5-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+  margin-bottom:16px;
+}
+@media(max-width:700px){ .t5-grid { grid-template-columns:1fr; } }
+
+.t5-count-badge {
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  background:var(--surface2);
+  border:1px solid var(--border);
+  color:var(--mu);
+  padding:2px 8px;
+  border-radius:4px;
+  transition:background .25s,color .25s,border-color .25s;
+}
+
+.t5-output-wrap {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:10px;
+  overflow:hidden;
+  transition:background .25s,border-color .25s;
+}
+.t5-output-header {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:11px 16px;
+  border-bottom:1px solid var(--border);
+  background:var(--surface2);
+  transition:background .25s,border-color .25s;
+}
+.t5-output-label {
+  font-size:11px; font-family:'JetBrains Mono',monospace;
+  letter-spacing:.08em; text-transform:uppercase;
+  color:#00e5ff; font-weight:600;
+  display:flex; align-items:center; gap:8px;
+}
+.t5-output-label::before {
+  content:'';width:6px;height:6px;
+  background:#00e5ff; border-radius:50%;
+  box-shadow:0 0 8px #00e5ff;
+  animation:spfPulse 2s ease infinite;
+}
+@keyframes spfPulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+#t5output {
+  padding:14px 16px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:12px; line-height:2;
+  color:var(--tx); min-height:120px;
+  white-space:pre-wrap; word-break:break-all;
+  overflow-x:auto;
+  transition:color .25s;
+}
+.t5-output-line {
+  display:block; padding:3px 8px; margin:2px 0;
+  border-radius:4px; border-left:2px solid transparent;
+  transition:background .15s,border-color .15s;
+}
+.t5-output-line:hover {
+  background:var(--surface2); border-left-color:#00e5ff;
+}
+.t5-placeholder { color:var(--mu); font-style:italic; font-size:12px; }
+
+.t5-stats-row {
+  display:flex; gap:16px; padding:10px 16px;
+  border-top:1px solid var(--border);
+  background:rgba(0,0,0,.15);
+  transition:border-color .25s;
+}
+.t5-stat {
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px; color:var(--mu);
+  transition:color .25s;
+}
+.t5-stat span { color:#00e5ff; font-weight:600; }
+
+.t5-error {
+  font-family:'JetBrains Mono',monospace; font-size:11px;
+  color:var(--rd);
+  background:rgba(255,107,107,.08);
+  border:1px solid rgba(255,107,107,.25);
+  border-radius:6px; padding:8px 12px;
+  margin-top:8px; display:none;
+}
+.btn-spf { background:#00e5ff; color:#0a0c10 !important; }
+body.light .btn-spf { color:#001a1f !important; }
+.btn-spf:hover { box-shadow:0 4px 16px rgba(0,229,255,.35); }
+
 .nav-btn.on-teal {
   background:rgba(245,166,35,0.10);
   border-color:rgba(245,166,35,0.45);
@@ -757,6 +861,12 @@ body.light .btn-y { color:#3a2200; }
         <span class="ni-name">File Combiner</span>
       </div>
     </button>
+    <button class="nav-btn" id="nb5" onclick="showTool(5)">
+      <div class="ni-ic"><i class="ph ph-shield-check"></i></div>
+      <div class="ni-body">
+        <span class="ni-name">SPF Generator</span>
+      </div>
+    </button>
   </nav>
 
   <div class="sb-foot">
@@ -1094,6 +1204,73 @@ body.light .btn-y { color:#3a2200; }
     </div>
   </div><!-- /tool4 -->
 
+  <!-- ─────── TOOL 5 — SPF GENERATOR ─────── -->
+  <div id="tool5">
+    <div class="topbar">
+      <div class="tb-dot dot-spf"></div>
+      <i class="ph ph-shield-check" style="font-size:16px;color:#00e5ff;"></i>
+      <span class="tb-title">SPF Generator</span>
+    </div>
+    <div class="content">
+
+      <div class="hint-bar" style="border-color:rgba(0,229,255,.20);background:rgba(0,229,255,.04);">
+        <strong style="color:#00e5ff;">Enter</strong> IP addresses &amp; domain names
+        <i class="ph ph-arrow-right" style="font-size:11px;margin:0 4px;"></i>
+        <strong style="color:#00e5ff;">Generate</strong> SPF TXT records
+        <i class="ph ph-arrow-right" style="font-size:11px;margin:0 4px;"></i>
+        <strong style="color:#00e5ff;">Copy</strong> or Download
+      </div>
+
+      <div class="t5-grid">
+        <!-- IPs -->
+        <div class="card">
+          <div class="card-title" style="color:#00e5ff;border-color:rgba(0,229,255,.18);">
+            <i class="ph ph-network"></i> IP Addresses
+            <span class="t5-count-badge" id="t5-ip-count" style="margin-left:auto;">0 IPs</span>
+          </div>
+          <textarea id="t5-ip-input" style="height:190px;border-color:rgba(0,229,255,.20);background:rgba(0,229,255,.02);"
+            placeholder="Enter IP addresses&#10;One per line or comma-separated&#10;&#10;192.168.1.1&#10;10.0.0.1, 172.16.0.5&#10;..."></textarea>
+          <div class="t5-error" id="t5-ip-error"></div>
+        </div>
+        <!-- Domains -->
+        <div class="card">
+          <div class="card-title" style="color:#00e5ff;border-color:rgba(0,229,255,.18);">
+            <i class="ph ph-globe"></i> Domains
+            <span class="t5-count-badge" id="t5-domain-count" style="margin-left:auto;">0 Domains</span>
+          </div>
+          <textarea id="t5-domain-input" style="height:190px;border-color:rgba(0,229,255,.20);background:rgba(0,229,255,.02);"
+            placeholder="Enter domain names&#10;One per line or comma-separated&#10;&#10;example.com&#10;mail.example.org&#10;..."></textarea>
+          <div class="t5-error" id="t5-domain-error"></div>
+        </div>
+      </div>
+
+      <div class="btn-row" style="margin-bottom:16px;">
+        <button class="btn btn-spf" onclick="t5Generate()">
+          <i class="ph ph-play"></i> Generate Records
+        </button>
+        <button class="btn btn-n" onclick="t5Clear()">
+          <i class="ph ph-trash"></i> Clear All
+        </button>
+      </div>
+
+      <div class="t5-output-wrap">
+        <div class="t5-output-header">
+          <span class="t5-output-label">Generated SPF Records</span>
+          <div style="display:flex;gap:6px;">
+            <button class="btn btn-n btn-sm" onclick="t5CopyAll()"><i class="ph ph-copy"></i> Copy All</button>
+            <button class="btn btn-n btn-sm" onclick="t5Download()"><i class="ph ph-download-simple"></i> .txt</button>
+          </div>
+        </div>
+        <div id="t5output"><span class="t5-placeholder">Your SPF records will appear here…</span></div>
+        <div class="t5-stats-row" id="t5-stats" style="display:none;">
+          <span class="t5-stat">Records: <span id="t5-stat-records">0</span></span>
+          <span class="t5-stat">IPs per record: <span id="t5-stat-ips">0</span></span>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /tool5 -->
+
 </div><!-- /workspace -->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -1116,12 +1293,94 @@ function showTool(n) {
   document.getElementById('tool2').style.display   = n===2 ? 'flex' : 'none';
   document.getElementById('tool3').style.display   = n===3 ? 'flex' : 'none';
   document.getElementById('tool4').style.display   = n===4 ? 'flex' : 'none';
+  document.getElementById('tool5').style.display   = n===5 ? 'flex' : 'none';
   document.getElementById('nb1').className = 'nav-btn' + (n===1 ? ' on-blue'   : '');
   document.getElementById('nb2').className = 'nav-btn' + (n===2 ? ' on-green'  : '');
   document.getElementById('nb3').className = 'nav-btn' + (n===3 ? ' on-purple' : '');
   document.getElementById('nb4').className = 'nav-btn' + (n===4 ? ' on-teal'   : '');
+  document.getElementById('nb5').className = 'nav-btn' + (n===5 ? ' on-spf'    : '');
   document.getElementById('workspace').scrollTop = 0;
 }
+
+// ══════════════════════════════
+//  TOOL 5 — SPF GENERATOR
+// ══════════════════════════════
+(function(){
+  const ipInput     = document.getElementById('t5-ip-input');
+  const domainInput = document.getElementById('t5-domain-input');
+
+  function t5parse(text) {
+    return text.split(/[\n,]+/).map(s=>s.trim()).filter(s=>s.length>0);
+  }
+
+  function t5updateCounts() {
+    const ips     = t5parse(ipInput.value);
+    const domains = t5parse(domainInput.value);
+    document.getElementById('t5-ip-count').textContent     = ips.length     + ' IP'     + (ips.length!==1?'s':'');
+    document.getElementById('t5-domain-count').textContent = domains.length + ' Domain' + (domains.length!==1?'s':'');
+  }
+
+  ipInput.addEventListener('input',     t5updateCounts);
+  domainInput.addEventListener('input', t5updateCounts);
+
+  window.t5Generate = function() {
+    const ips     = t5parse(ipInput.value);
+    const domains = t5parse(domainInput.value);
+    const ipErr   = document.getElementById('t5-ip-error');
+    const dmErr   = document.getElementById('t5-domain-error');
+    ipErr.style.display = 'none';
+    dmErr.style.display = 'none';
+    let err = false;
+    if(!ips.length)    { ipErr.textContent='⚠ Please enter at least one IP address.';  ipErr.style.display='block'; err=true; }
+    if(!domains.length){ dmErr.textContent='⚠ Please enter at least one domain name.'; dmErr.style.display='block'; err=true; }
+    if(err) return;
+
+    const ipPart = ips.map(ip=>'ip4:'+ip).join(' ');
+    const lines  = domains.map(d => d+','+d+',TXT,v=spf1 '+ipPart+' -all');
+
+    const out = document.getElementById('t5output');
+    out.innerHTML = '';
+    lines.forEach(line => {
+      const span = document.createElement('span');
+      span.className = 't5-output-line';
+      span.textContent = line;
+      out.appendChild(span);
+      out.appendChild(document.createTextNode('\n'));
+    });
+
+    document.getElementById('t5-stat-records').textContent = lines.length;
+    document.getElementById('t5-stat-ips').textContent     = ips.length;
+    document.getElementById('t5-stats').style.display      = 'flex';
+  };
+
+  function t5getText() {
+    return Array.from(document.getElementById('t5output').querySelectorAll('.t5-output-line'))
+      .map(el=>el.textContent).join('\n');
+  }
+
+  window.t5CopyAll = function() {
+    const text = t5getText();
+    if(!text) return;
+    navigator.clipboard.writeText(text).then(()=>showToast('Copied!')).catch(()=>showToast('Copy failed','err'));
+  };
+
+  window.t5Download = function() {
+    const text = t5getText();
+    if(!text) { showToast('Nothing to download','err'); return; }
+    dlBlob(text, 'spf-records.txt');
+    showToast('Downloaded!');
+  };
+
+  window.t5Clear = function() {
+    ipInput.value = '';
+    domainInput.value = '';
+    document.getElementById('t5output').innerHTML = '<span class="t5-placeholder">Your SPF records will appear here…</span>';
+    document.getElementById('t5-stats').style.display = 'none';
+    document.getElementById('t5-ip-error').style.display = 'none';
+    document.getElementById('t5-domain-error').style.display = 'none';
+    t5updateCounts();
+  };
+})();
 
 // ══════════════════════════════
 //  TOOL 3 — IP CONVERTER
