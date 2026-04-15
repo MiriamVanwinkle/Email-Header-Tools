@@ -1015,6 +1015,12 @@ body.light .btn-y { color:#3a2200; }
 
       <div class="t2-ctrl">
         <label class="tog-label" style="display:none;"><input type="checkbox" id="forceDt" checked> Force Date → [DATE]</label>
+        <label class="tog-label" style="gap:8px;">
+          <input type="checkbox" id="senderDomainCb"> Modify Sender Domain
+        </label>
+        <div id="senderDomainWrap" style="display:none;flex:1;min-width:180px;max-width:320px;">
+          <input type="text" id="senderDomainInput" placeholder="e.g. google.com" style="height:32px;padding:4px 10px;font-size:12px;resize:none;">
+        </div>
         <button class="btn btn-y" id="zipBtn" disabled><i class="ph ph-file-zip"></i> Download ZIP</button>
       </div>
 
@@ -1649,6 +1655,12 @@ function t2parse(email){
     all.push({name:nm,full:blk.join('\n')});
     if(nm==='received')lastR=all.length-1;
   }
+
+  // Sender domain option
+  const senderEnabled=document.getElementById('senderDomainCb').checked;
+  const blastDomain=(document.getElementById('senderDomainInput').value||'').trim();
+  let hasSender=all.some(h=>h.name==='sender');
+
   let kept=[],indH=[],afterR=false;
   for(let j=0;j<all.length;j++){
     const{name,full}=all[j];
@@ -1662,6 +1674,13 @@ function t2parse(email){
     else if(name==='to')ph='To: [*to]';
     else if(name==='cc'){hasCc=true;ph='Cc: [*to]';}
     else if(name==='subject')ph='Subject: [S]';
+    else if(name==='sender'){
+      if(senderEnabled&&blastDomain){
+        const val=full.split(':').slice(1).join(':').trim();
+        const local=val.split('@')[0];
+        ph='Sender: '+local+'@'+blastDomain;
+      }else{ph=full;}
+    }
     else if(name.startsWith('content-')){
       if(!ctAdded){ph='Content-Type: multipart/related;boundary="[BND]";type="multipart/alternative"';ctAdded=true;indH.push({name:'Content-Type',content:ph});kept.push(ph);}
       continue;
@@ -1675,6 +1694,12 @@ function t2parse(email){
     if(!name.startsWith('content-')){indH.push({name:full.split(':')[0].trim(),content:ph});kept.push(ph);}
   }
   if(!hasCc){kept.push('Cc: [*to]');indH.push({name:'Cc',content:'Cc: [*to]'});}
+  // If Sender not in email and option enabled with domain → inject it
+  if(senderEnabled&&blastDomain&&!hasSender){
+    const senderLine='Sender: noreply@'+blastDomain;
+    kept.push(senderLine);
+    indH.push({name:'Sender',content:senderLine});
+  }
   indH.sort((a,b)=>a.name.localeCompare(b.name));
   return{combined:kept.join('\n'),headers:indH};
 }
@@ -1773,6 +1798,20 @@ zipBtn.onclick=async()=>{
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='all_email_headers.zip';a.click();
 };
 fdCb.addEventListener('change',()=>{
+  t2f.forEach((_,i)=>{if(t2f[i].s==='done')t2proc(i);});
+  if(t2pi!==-1)t2prev(t2pi);
+});
+
+// Sender domain toggle
+const senderDomainCb=document.getElementById('senderDomainCb');
+const senderDomainWrap=document.getElementById('senderDomainWrap');
+const senderDomainInput=document.getElementById('senderDomainInput');
+senderDomainCb.addEventListener('change',()=>{
+  senderDomainWrap.style.display=senderDomainCb.checked?'flex':'none';
+  t2f.forEach((_,i)=>{if(t2f[i].s==='done')t2proc(i);});
+  if(t2pi!==-1)t2prev(t2pi);
+});
+senderDomainInput.addEventListener('input',()=>{
   t2f.forEach((_,i)=>{if(t2f[i].s==='done')t2proc(i);});
   if(t2pi!==-1)t2prev(t2pi);
 });
