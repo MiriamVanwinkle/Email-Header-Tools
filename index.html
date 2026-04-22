@@ -251,6 +251,168 @@ i.ph {
 #tool5 { display:none; flex-direction:column; }
 .dot-spf { background:#00e5ff; }
 
+/* ══════════════════════════════════════
+   TOOL 6 — IP BULK CHECKER
+══════════════════════════════════════ */
+#tool6 { display:none; flex-direction:column; }
+.dot-ipc { background:#b06cfa; }
+.nav-btn.on-ipc {
+  background:rgba(176,108,250,0.10);
+  border-color:rgba(176,108,250,0.45);
+}
+.nav-btn.on-ipc .ni-ic { background:rgba(176,108,250,0.13); color:#b06cfa; }
+.nav-btn.on-ipc .ni-name { color:#b06cfa; }
+
+/* IP Bulk Checker — inner styles */
+.ipc-hint {
+  background:rgba(176,108,250,0.06);
+  border:1px solid rgba(176,108,250,0.22);
+  border-radius:10px; padding:11px 16px; margin-bottom:16px;
+  font-size:11px; color:var(--mu); line-height:1.8;
+  transition:all .25s;
+}
+.ipc-hint strong { color:#b06cfa; }
+
+.ipc-card-hdr {
+  padding:12px 16px;
+  background:var(--surface2); border-bottom:1px solid var(--border);
+  font-size:11px; font-weight:700; color:#b06cfa;
+  letter-spacing:.05em; text-transform:uppercase;
+  display:flex; align-items:center; gap:8px;
+  transition:background .25s,border-color .25s;
+}
+.ipc-card-hdr i { font-size:15px; }
+
+.ipc-opts-row {
+  display:flex; gap:10px; flex-wrap:wrap;
+  margin-bottom:14px; align-items:center;
+}
+.ipc-opt-chip {
+  display:flex; align-items:center; gap:6px;
+  font-size:11px; font-weight:500; color:var(--mu);
+  cursor:pointer; background:var(--surface2);
+  border:1px solid var(--border);
+  padding:6px 11px; border-radius:7px;
+  transition:all .2s; user-select:none;
+}
+.ipc-opt-chip input { accent-color:#b06cfa; cursor:pointer; }
+.ipc-opt-chip:hover { border-color:#b06cfa; color:var(--tx); }
+
+.btn-ipc { background:linear-gradient(135deg,#b06cfa,var(--a1)); color:#fff; }
+.btn-ipc:hover { box-shadow:0 4px 16px rgba(176,108,250,.35); }
+
+.ipc-progress-wrap { display:none; margin-bottom:16px; }
+.ipc-progress-bg {
+  width:100%; height:6px;
+  background:var(--surface2); border-radius:3px;
+  overflow:hidden; margin-bottom:8px;
+}
+.ipc-progress-fill {
+  height:100%;
+  background:linear-gradient(90deg,#b06cfa,var(--a1));
+  border-radius:3px; transition:width .3s ease; width:0%;
+}
+.ipc-progress-label {
+  font-size:11px; color:var(--mu);
+  display:flex; justify-content:space-between;
+}
+.ipc-progress-label span { color:#b06cfa; font-weight:600; }
+
+.ipc-summary {
+  display:none; gap:10px; margin-bottom:16px; flex-wrap:wrap;
+}
+.ipc-pill {
+  flex:1; min-width:100px;
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:10px; padding:12px 16px;
+  display:flex; flex-direction:column; gap:4px;
+  transition:background .25s,border-color .25s;
+}
+.ipc-pill-val { font-size:20px; font-weight:700; }
+.ipc-pill-lbl { font-size:10px; font-weight:600; letter-spacing:.04em; color:var(--mu); }
+.ipc-pill.p-total .ipc-pill-val  { color:var(--tx); }
+.ipc-pill.p-clean .ipc-pill-val  { color:var(--a2); }
+.ipc-pill.p-listed .ipc-pill-val { color:var(--rd); }
+.ipc-pill.p-unk .ipc-pill-val    { color:var(--a3); }
+
+.ipc-results-wrap { display:none; }
+.ipc-res-hdr {
+  display:flex; align-items:center;
+  justify-content:space-between; margin-bottom:10px;
+  flex-wrap:wrap; gap:8px;
+}
+.ipc-res-title {
+  font-size:13px; font-weight:700; color:var(--tx);
+  display:flex; align-items:center; gap:7px;
+}
+.ipc-ftabs { display:flex; gap:4px; margin-bottom:12px; flex-wrap:wrap; }
+.ipc-ftab {
+  padding:5px 12px; border-radius:6px;
+  background:var(--surface2); border:1px solid var(--border);
+  font-size:10px; font-weight:600; color:var(--mu);
+  cursor:pointer; transition:all .2s;
+  letter-spacing:.04em; text-transform:uppercase;
+}
+.ipc-ftab:hover { border-color:#b06cfa; color:var(--tx); }
+.ipc-ftab.active {
+  background:rgba(176,108,250,.15);
+  border-color:rgba(176,108,250,.45);
+  color:#b06cfa;
+}
+
+.ipc-row {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:10px; margin-bottom:8px; overflow:hidden;
+  transition:background .25s,border-color .25s;
+}
+.ipc-row:hover { border-color:rgba(176,108,250,.35); }
+.ipc-main-row {
+  display:flex; align-items:center; gap:10px;
+  padding:11px 14px; cursor:pointer;
+}
+.ipc-addr {
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px; font-weight:600; color:var(--tx); min-width:130px;
+}
+.ipc-badge {
+  display:flex; align-items:center; gap:5px;
+  font-size:10px; font-weight:700; padding:3px 10px;
+  border-radius:5px; letter-spacing:.04em; flex-shrink:0;
+}
+.ipc-badge.b-clean   { background:rgba(56,217,169,.12);  color:var(--a2); border:1px solid rgba(56,217,169,.25); }
+.ipc-badge.b-listed  { background:rgba(255,107,107,.12); color:var(--rd); border:1px solid rgba(255,107,107,.25); }
+.ipc-badge.b-checking{ background:rgba(176,108,250,.10); color:#b06cfa;   border:1px solid rgba(176,108,250,.25); }
+.ipc-badge.b-unknown { background:rgba(245,166,35,.10);  color:var(--a3); border:1px solid rgba(245,166,35,.25); }
+.ipc-listed-count { font-size:10px; color:var(--mu); margin-left:auto; }
+.ipc-toggle { font-size:13px; color:var(--mu); flex-shrink:0; transition:transform .2s; }
+.ipc-toggle.open { transform:rotate(180deg); }
+
+.ipc-details {
+  display:none; border-top:1px solid var(--border);
+  padding:10px 14px; background:var(--surface2);
+  transition:background .25s,border-color .25s;
+}
+.ipc-details.open { display:block; }
+.ipc-dnsbl-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:5px;
+}
+.ipc-dnsbl-item {
+  display:flex; align-items:center; gap:7px;
+  padding:5px 8px; border-radius:6px;
+  font-size:10px; font-weight:500;
+}
+.ipc-dnsbl-item.listed  { background:rgba(255,107,107,.07); color:var(--rd); }
+.ipc-dnsbl-item.clean   { background:rgba(56,217,169,.05);  color:var(--mu); }
+.ipc-dnsbl-item.pending { color:var(--mu); }
+.ipc-dnsbl-dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+.ipc-dnsbl-item.listed  .ipc-dnsbl-dot { background:var(--rd); box-shadow:0 0 5px var(--rd); }
+.ipc-dnsbl-item.clean   .ipc-dnsbl-dot { background:var(--a2); }
+.ipc-dnsbl-item.pending .ipc-dnsbl-dot { background:var(--mu); animation:ipcBlink 1s infinite; }
+@keyframes ipcBlink { 0%,100%{opacity:.3} 50%{opacity:1} }
+@keyframes ipcSpin  { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+
 .nav-btn.on-spf {
   background:rgba(0,229,255,0.10);
   border-color:rgba(0,229,255,0.45);
@@ -867,6 +1029,12 @@ body.light .btn-y { color:#3a2200; }
         <span class="ni-name">SPF Generator</span>
       </div>
     </button>
+    <button class="nav-btn" id="nb6" onclick="showTool(6)">
+      <div class="ni-ic"><i class="ph ph-shield-warning"></i></div>
+      <div class="ni-body">
+        <span class="ni-name">IP Bulk Checker</span>
+      </div>
+    </button>
   </nav>
 
   <div class="sb-foot">
@@ -1277,6 +1445,79 @@ body.light .btn-y { color:#3a2200; }
     </div>
   </div><!-- /tool5 -->
 
+  <!-- ─────── TOOL 6 : IP BULK CHECKER ─────── -->
+  <div id="tool6">
+    <div class="topbar">
+      <div class="tb-dot dot-ipc"></div>
+      <i class="ph ph-shield-warning" style="font-size:16px;color:#b06cfa;"></i>
+      <span class="tb-title">IP Bulk Checker</span>
+    </div>
+    <div class="content">
+
+      <div class="ipc-hint">
+        <strong>Paste</strong> IP addresses (one per line or comma-separated)
+        <i class="ph ph-arrow-right" style="font-size:10px;margin:0 4px;"></i>
+        <strong>Check</strong> against major DNSBL blacklists
+        <i class="ph ph-arrow-right" style="font-size:10px;margin:0 4px;"></i>
+        <strong>Export</strong> listed IPs
+      </div>
+
+      <!-- Input Card -->
+      <div class="card">
+        <div class="ipc-card-hdr"><i class="ph ph-network"></i> IP Addresses Input</div>
+        <div style="padding:16px;">
+          <textarea id="ipcInput" style="height:130px;border-color:rgba(176,108,250,.25);background:rgba(176,108,250,.03);"
+            placeholder="Enter IPs — one per line or comma-separated&#10;&#10;192.168.1.1&#10;10.0.0.1, 172.16.0.5&#10;..."></textarea>
+          <div class="ipc-opts-row" style="margin-top:10px;">
+            <label class="ipc-opt-chip"><input type="checkbox" id="ipcSkipPrivate" checked> Skip private IPs</label>
+            <label class="ipc-opt-chip"><input type="checkbox" id="ipcStopOnFirst"> Stop on first listing</label>
+            <span style="font-size:11px;color:var(--mu);margin-left:auto;" id="ipcCountLabel">0 IPs</span>
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-ipc" id="ipcCheckBtn" onclick="ipcStartCheck()"><i class="ph ph-magnifying-glass"></i> Check All IPs</button>
+            <button class="btn btn-n" onclick="ipcClearAll()"><i class="ph ph-trash"></i> Clear</button>
+            <button class="btn btn-g" id="ipcExportBtn" style="display:none;" onclick="ipcExportListed()"><i class="ph ph-download-simple"></i> Export Listed</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Progress -->
+      <div class="ipc-progress-wrap" id="ipcProgressWrap">
+        <div class="ipc-progress-bg"><div class="ipc-progress-fill" id="ipcProgressFill"></div></div>
+        <div class="ipc-progress-label">
+          <span id="ipcProgressText">Checking…</span>
+          <span id="ipcProgressPct">0%</span>
+        </div>
+      </div>
+
+      <!-- Summary Pills -->
+      <div class="ipc-summary" id="ipcSummaryRow">
+        <div class="ipc-pill p-total"><span class="ipc-pill-val" id="ipc-sum-total">0</span><span class="ipc-pill-lbl">Total IPs</span></div>
+        <div class="ipc-pill p-clean"><span class="ipc-pill-val" id="ipc-sum-clean">0</span><span class="ipc-pill-lbl">Clean</span></div>
+        <div class="ipc-pill p-listed"><span class="ipc-pill-val" id="ipc-sum-listed">0</span><span class="ipc-pill-lbl">Listed</span></div>
+        <div class="ipc-pill p-unk"><span class="ipc-pill-val" id="ipc-sum-unknown">0</span><span class="ipc-pill-lbl">Unknown</span></div>
+      </div>
+
+      <!-- Results -->
+      <div class="ipc-results-wrap" id="ipcResultsWrap">
+        <div class="ipc-res-hdr">
+          <div class="ipc-res-title"><i class="ph ph-list-checks" style="color:#b06cfa;"></i> Results</div>
+          <div style="display:flex;gap:6px;">
+            <button class="btn btn-n" style="font-size:10px;padding:6px 12px;" onclick="ipcExpandAll()"><i class="ph ph-caret-down"></i> Expand All</button>
+            <button class="btn btn-n" style="font-size:10px;padding:6px 12px;" onclick="ipcCollapseAll()"><i class="ph ph-caret-up"></i> Collapse</button>
+          </div>
+        </div>
+        <div class="ipc-ftabs">
+          <div class="ipc-ftab active" onclick="ipcSetFilter('all',this)">All</div>
+          <div class="ipc-ftab" onclick="ipcSetFilter('listed',this)">Listed Only</div>
+          <div class="ipc-ftab" onclick="ipcSetFilter('clean',this)">Clean Only</div>
+        </div>
+        <div id="ipcResultsList"></div>
+      </div>
+
+    </div>
+  </div><!-- /tool6 -->
+
 </div><!-- /workspace -->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -1300,11 +1541,13 @@ function showTool(n) {
   document.getElementById('tool3').style.display   = n===3 ? 'flex' : 'none';
   document.getElementById('tool4').style.display   = n===4 ? 'flex' : 'none';
   document.getElementById('tool5').style.display   = n===5 ? 'flex' : 'none';
+  document.getElementById('tool6').style.display   = n===6 ? 'flex' : 'none';
   document.getElementById('nb1').className = 'nav-btn' + (n===1 ? ' on-blue'   : '');
   document.getElementById('nb2').className = 'nav-btn' + (n===2 ? ' on-green'  : '');
   document.getElementById('nb3').className = 'nav-btn' + (n===3 ? ' on-purple' : '');
   document.getElementById('nb4').className = 'nav-btn' + (n===4 ? ' on-teal'   : '');
   document.getElementById('nb5').className = 'nav-btn' + (n===5 ? ' on-spf'    : '');
+  document.getElementById('nb6').className = 'nav-btn' + (n===6 ? ' on-ipc'    : '');
   document.getElementById('workspace').scrollTop = 0;
 }
 
@@ -1939,6 +2182,206 @@ function t4showStatus(msg, type) {
   const col = type==='ok' ? 'var(--a3)' : type==='err' ? 'var(--rd)' : 'var(--mu)';
   el.innerHTML = `<div style="margin:10px 0;padding:9px 13px;border-radius:8px;background:${bg};color:${col};font-size:11px;font-weight:600;">${msg}</div>`;
 }
+
+// ══════════════════════════════
+//  TOOL 6 — IP BULK CHECKER
+// ══════════════════════════════
+(function(){
+  const DNSBLS = [
+    'zen.spamhaus.org','bl.spamcop.net','b.barracudacentral.org',
+    'dnsbl.sorbs.net','dnsbl-1.uceprotect.net','dnsbl-2.uceprotect.net',
+    'dnsbl-3.uceprotect.net','psbl.surriel.com','spam.dnsbl.sorbs.net',
+    'http.dnsbl.sorbs.net','sbl.spamhaus.org','xbl.spamhaus.org',
+    'pbl.spamhaus.org','dnsbl.dronebl.org','db.wpbl.info',
+    'ix.dnsbl.manitu.net','bl.mailspike.net','wl.mailspike.net',
+    'all.s5h.net','bogons.cymru.com'
+  ];
+  const DNSBL_API = 'https://dns.google/resolve';
+
+  let ipcResults = {};
+  let ipcFilter  = 'all';
+  let ipcChecking = false;
+
+  function ipcParseIPs(text){
+    return [...new Set(
+      text.split(/[\n,;\s]+/).map(s=>s.trim())
+        .filter(s=>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(s))
+    )];
+  }
+  function ipcIsPrivate(ip){
+    const [a,b]=ip.split('.').map(Number);
+    return a===10||(a===172&&b>=16&&b<=31)||(a===192&&b===168)||a===127;
+  }
+  function ipcReverseIP(ip){ return ip.split('.').reverse().join('.'); }
+
+  document.getElementById('ipcInput').addEventListener('input',function(){
+    const ips=ipcParseIPs(this.value);
+    document.getElementById('ipcCountLabel').textContent=ips.length+' IP'+(ips.length!==1?'s':'');
+  });
+
+  async function ipcCheckDNSBL(ip,dnsbl){
+    const query=ipcReverseIP(ip)+'.'+dnsbl;
+    try{
+      const r=await fetch(`${DNSBL_API}?name=${encodeURIComponent(query)}&type=A`);
+      const d=await r.json();
+      return d.Status===0&&d.Answer&&d.Answer.length>0;
+    }catch(e){return null;}
+  }
+
+  function ipcUpdateSummary(){
+    const ips=Object.keys(ipcResults);
+    const listed=ips.filter(ip=>ipcResults[ip].status==='listed').length;
+    const clean=ips.filter(ip=>ipcResults[ip].status==='clean').length;
+    const unknown=ips.filter(ip=>ipcResults[ip].status==='unknown').length;
+    document.getElementById('ipc-sum-total').textContent=ips.length;
+    document.getElementById('ipc-sum-listed').textContent=listed;
+    document.getElementById('ipc-sum-clean').textContent=clean;
+    document.getElementById('ipc-sum-unknown').textContent=unknown;
+    document.getElementById('ipcSummaryRow').style.display=ips.length?'flex':'none';
+    document.getElementById('ipcExportBtn').style.display=listed?'inline-flex':'none';
+  }
+
+  function ipcRenderResults(){
+    const list=document.getElementById('ipcResultsList');
+    let ips=Object.keys(ipcResults).filter(ip=>{
+      if(ipcFilter==='listed') return ipcResults[ip].status==='listed';
+      if(ipcFilter==='clean')  return ipcResults[ip].status==='clean';
+      return true;
+    });
+    if(!ips.length){
+      list.innerHTML='<div style="text-align:center;padding:48px 20px;color:var(--mu);font-size:12px;"><i class="ph ph-magnifying-glass" style="font-size:40px;opacity:.3;display:block;margin-bottom:12px;"></i>No results match the current filter.</div>';
+      return;
+    }
+    list.innerHTML='';
+    ips.forEach(ip=>{
+      const r=ipcResults[ip];
+      const sc=r.status==='listed'?'b-listed':r.status==='clean'?'b-clean':r.status==='checking'?'b-checking':'b-unknown';
+      const sl=r.status==='listed'?'<i class="ph ph-warning-circle"></i>LISTED':
+               r.status==='clean'?'<i class="ph ph-check-circle"></i>CLEAN':
+               r.status==='checking'?'<i class="ph ph-circle-notch" style="animation:ipcSpin .8s linear infinite;display:inline-block;"></i>CHECKING':
+               '<i class="ph ph-question"></i>UNKNOWN';
+      const listedCount=r.dnsbls?r.dnsbls.filter(d=>d.listed===true).length:0;
+      const row=document.createElement('div');
+      row.className='ipc-row';
+      row.id='ipcrow-'+ip.replace(/\./g,'_');
+      row.innerHTML=`
+        <div class="ipc-main-row" onclick="ipcToggleDetails('${ip}')">
+          <div class="ipc-addr">${ip}</div>
+          <div class="ipc-badge ${sc}">${sl}</div>
+          ${r.status==='listed'?`<div class="ipc-listed-count"><span style="color:var(--rd);font-weight:700;">${listedCount}</span> blacklist${listedCount!==1?'s':''}</div>`:''}
+          ${r.dnsbls?`<i class="ph ph-caret-down ipc-toggle" id="ipctog-${ip.replace(/\./g,'_')}"></i>`:''}
+        </div>
+        ${r.dnsbls?`
+        <div class="ipc-details" id="ipcdet-${ip.replace(/\./g,'_')}">
+          <div class="ipc-dnsbl-grid">
+            ${r.dnsbls.map(d=>`
+              <div class="ipc-dnsbl-item ${d.listed===true?'listed':d.listed===false?'clean':'pending'}">
+                <div class="ipc-dnsbl-dot"></div>
+                <span>${d.name}</span>
+              </div>`).join('')}
+          </div>
+        </div>`:''}`;
+      list.appendChild(row);
+    });
+    document.getElementById('ipcResultsWrap').style.display='block';
+  }
+
+  window.ipcToggleDetails=function(ip){
+    const key=ip.replace(/\./g,'_');
+    const det=document.getElementById('ipcdet-'+key);
+    const tog=document.getElementById('ipctog-'+key);
+    if(!det)return;
+    const open=det.classList.toggle('open');
+    if(tog)tog.classList.toggle('open',open);
+  };
+  window.ipcExpandAll=function(){
+    document.querySelectorAll('.ipc-details').forEach(d=>d.classList.add('open'));
+    document.querySelectorAll('.ipc-toggle').forEach(t=>t.classList.add('open'));
+  };
+  window.ipcCollapseAll=function(){
+    document.querySelectorAll('.ipc-details').forEach(d=>d.classList.remove('open'));
+    document.querySelectorAll('.ipc-toggle').forEach(t=>t.classList.remove('open'));
+  };
+  window.ipcSetFilter=function(f,el){
+    ipcFilter=f;
+    document.querySelectorAll('.ipc-ftab').forEach(t=>t.classList.remove('active'));
+    el.classList.add('active');
+    ipcRenderResults();
+  };
+
+  window.ipcStartCheck=async function(){
+    if(ipcChecking)return;
+    const raw=document.getElementById('ipcInput').value;
+    let ips=ipcParseIPs(raw);
+    const skip=document.getElementById('ipcSkipPrivate').checked;
+    const stop=document.getElementById('ipcStopOnFirst').checked;
+    if(skip) ips=ips.filter(ip=>!ipcIsPrivate(ip));
+    if(!ips.length){showToast('No valid public IPs found','err');return;}
+
+    ipcChecking=true;
+    ipcResults={};
+    document.getElementById('ipcProgressWrap').style.display='block';
+    document.getElementById('ipcSummaryRow').style.display='none';
+    document.getElementById('ipcResultsWrap').style.display='none';
+    document.getElementById('ipcCheckBtn').disabled=true;
+
+    let done=0;
+    const total=ips.length;
+
+    for(const ip of ips){
+      ipcResults[ip]={status:'checking',dnsbls:DNSBLS.map(d=>({name:d,listed:null}))};
+      ipcRenderResults();ipcUpdateSummary();
+
+      let listedCount=0;
+      for(let i=0;i<DNSBLS.length;i++){
+        const listed=await ipcCheckDNSBL(ip,DNSBLS[i]);
+        ipcResults[ip].dnsbls[i].listed=listed;
+        if(listed===true)listedCount++;
+        if(stop&&listed===true)break;
+      }
+
+      ipcResults[ip].status=listedCount>0?'listed':'clean';
+      done++;
+      const pct=Math.round((done/total)*100);
+      document.getElementById('ipcProgressFill').style.width=pct+'%';
+      document.getElementById('ipcProgressPct').textContent=pct+'%';
+      document.getElementById('ipcProgressText').textContent=`Checked ${done}/${total} IPs…`;
+      ipcRenderResults();ipcUpdateSummary();
+    }
+
+    document.getElementById('ipcProgressWrap').style.display='none';
+    document.getElementById('ipcCheckBtn').disabled=false;
+    ipcChecking=false;
+    showToast(`Done! ${Object.values(ipcResults).filter(r=>r.status==='listed').length} listed of ${total}`);
+  };
+
+  window.ipcExportListed=function(){
+    const listed=Object.entries(ipcResults)
+      .filter(([,r])=>r.status==='listed')
+      .map(([ip,r])=>{
+        const bls=r.dnsbls.filter(d=>d.listed===true).map(d=>d.name).join(', ');
+        return `${ip}\t${bls}`;
+      }).join('\n');
+    if(!listed){showToast('No listed IPs to export','err');return;}
+    const blob=new Blob(['IP\tBlacklists\n'+listed],{type:'text/plain'});
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);
+    a.download='listed_ips.txt';
+    a.click();
+    showToast('Exported!');
+  };
+
+  window.ipcClearAll=function(){
+    ipcResults={};
+    document.getElementById('ipcInput').value='';
+    document.getElementById('ipcCountLabel').textContent='0 IPs';
+    document.getElementById('ipcProgressWrap').style.display='none';
+    document.getElementById('ipcSummaryRow').style.display='none';
+    document.getElementById('ipcResultsWrap').style.display='none';
+    document.getElementById('ipcExportBtn').style.display='none';
+    document.getElementById('ipcResultsList').innerHTML='';
+  };
+})();
 
 // ══════════════════════════════
 //  TOAST
