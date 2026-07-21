@@ -1882,7 +1882,7 @@ const cpyWr =document.querySelector('.cpy-wrap');
 function bad(n){return['delivered-to','received-spf','authentication-results','dkim-signature','domainkey-signature','x-google-smtp-source','x-forwarded-encrypted','x-received'].includes(n)||n.startsWith('dkim-')||n.startsWith('arc-');}
 
 function t2parse(email){
-  let hasCc=false,ctAdded=false,lastR=-1,all=[];
+  let hasCc=false,ctAdded=false,lastR=-1,rpIdx=-1,all=[];
   const ht=email.split(/\n\n|\r\n\r\n/,2)[0];
   const lines=ht.split(/\r?\n/);
   let i=0,start=false;
@@ -1890,7 +1890,7 @@ function t2parse(email){
     const ln=lines[i];
     if(!ln.includes(':')){i++;continue;}
     const nm=ln.split(':',1)[0].toLowerCase().trim();
-    if(nm==='return-path'){i++;while(i<lines.length&&/^[ \t]/.test(lines[i]))i++;start=true;continue;}
+    if(nm==='return-path'){i++;while(i<lines.length&&/^[ \t]/.test(lines[i]))i++;start=true;rpIdx=all.length;continue;}
     if(!start&&nm)start=true;
     if(!start){i++;continue;}
     const blk=[ln];i++;
@@ -1898,27 +1898,28 @@ function t2parse(email){
     all.push({name:nm,full:blk.join('\n')});
     if(nm==='received')lastR=all.length-1;
   }
+  if(rpIdx===-1)rpIdx=0; // no Return-Path found → treat all headers as "below" it
 
   // Sender domain option
   const senderEnabled=document.getElementById('senderDomainCb').checked;
   const blastDomain=(document.getElementById('senderDomainInput').value||'').trim();
   let hasSender=all.some(h=>h.name==='sender');
 
-  let kept=[],indH=[],afterR=false;
+  let kept=[],indH=[];
   for(let j=0;j<all.length;j++){
     const{name,full}=all[j];
-    if(j>lastR)afterR=true;
     if(bad(name))continue;
-    if(afterR&&name.startsWith('x-'))continue;
+    if(name.startsWith('x-')&&j<rpIdx)continue; // drop X- headers above Return-Path, keep the ones below it
     let ph=full;
     if(name==='date')ph=fdCb.checked?'Date: [DATE]':full;
-    else if(name==='from')ph='From: "[P_FRNAME]" <email[EID]@[P_RPATH]>';
+    else if(name==='from')ph='From: <[P_FRNAME]@[P_RPATH]>';
     else if(name==='reply-to'){const a=full.split(':')[1].trim();ph='Reply-To: '+a.split('@')[0]+'@[P_RPATH]';}
     else if(name==='to')ph='To: [*to]';
     else if(name==='cc'){hasCc=true;ph='Cc: [*to]';}
     else if(name==='subject')ph='Subject: [S]';
     else if(name==='sender'){
-      if(senderEnabled&&blastDomain){
+      if(!senderEnabled)continue; // Modify Sender Domain disabled → delete Sender header entirely
+      if(blastDomain){
         const val=full.split(':').slice(1).join(':').trim();
         const local=val.split('@')[0];
         ph='Sender: '+local+'@'+blastDomain;
